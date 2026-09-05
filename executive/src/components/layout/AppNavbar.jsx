@@ -18,7 +18,7 @@ export default function AppNavbar() {
 
   if (!currentSe) return null;
 
-  const level = seLevels.find((item) => String(item.id) === String(currentSe.se_level_id));
+  const level = (seLevels || []).find((item) => String(item.id) === String(currentSe.se_level_id));
 
   function handleLogout() {
     logout();
