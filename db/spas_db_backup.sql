@@ -18,6 +18,25 @@ USE `spas_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `achievements`
+--
+
+DROP TABLE IF EXISTS `achievements`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `achievements` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `se_id` int unsigned NOT NULL,
+  `target_amount` decimal(12,2) NOT NULL,
+  `achieved_amount` decimal(12,2) NOT NULL DEFAULT '0.00',
+  `month_year` date NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_se_month` (`se_id`,`month_year`),
+  CONSTRAINT `fk_achievement_se` FOREIGN KEY (`se_id`) REFERENCES `sales_executives` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `achievements`
 --
 
@@ -26,6 +45,43 @@ LOCK TABLES `achievements` WRITE;
 INSERT INTO `achievements` VALUES (1,1,442000.00,134500.00,'2026-06-01'),(2,1,459000.00,630000.00,'2026-07-01'),(3,2,457000.00,5203000.00,'2026-06-01'),(4,2,472000.00,4315000.00,'2026-07-01'),(5,3,452000.00,378500.00,'2026-06-01'),(6,3,474000.00,1163000.00,'2026-07-01'),(7,4,430000.00,900500.00,'2026-06-01'),(8,4,454000.00,1440500.00,'2026-07-01'),(9,5,429000.00,526500.00,'2026-06-01'),(10,5,451000.00,1562000.00,'2026-07-01'),(11,6,957000.00,1045500.00,'2026-06-01'),(12,6,990000.00,538500.00,'2026-07-01'),(13,7,992000.00,1095500.00,'2026-06-01'),(14,7,1063000.00,1671500.00,'2026-07-01'),(15,8,433000.00,135500.00,'2026-06-01'),(16,8,451000.00,943000.00,'2026-07-01'),(17,9,456000.00,1694000.00,'2026-06-01'),(18,9,491000.00,1621000.00,'2026-07-01'),(19,10,705000.00,670500.00,'2026-06-01'),(20,10,740000.00,6068000.00,'2026-07-01'),(21,11,471000.00,46000.00,'2026-06-01'),(22,11,486000.00,472500.00,'2026-07-01'),(23,12,725000.00,1135000.00,'2026-06-01'),(24,12,757000.00,2849500.00,'2026-07-01'),(25,13,675000.00,2662500.00,'2026-06-01'),(26,13,699000.00,3507500.00,'2026-07-01'),(27,14,687000.00,2074000.00,'2026-06-01'),(28,14,736000.00,1294500.00,'2026-07-01'),(29,15,242000.00,375000.00,'2026-06-01'),(30,15,256000.00,1259000.00,'2026-07-01'),(31,16,253000.00,1890500.00,'2026-06-01'),(32,16,265000.00,668500.00,'2026-07-01'),(33,17,251000.00,1262000.00,'2026-06-01'),(34,17,259000.00,461500.00,'2026-07-01'),(35,18,669000.00,1709500.00,'2026-06-01'),(36,18,696000.00,2597500.00,'2026-07-01'),(37,19,713000.00,3106000.00,'2026-06-01'),(38,19,750000.00,2904500.00,'2026-07-01'),(39,20,442000.00,3396500.00,'2026-06-01'),(40,20,468000.00,2625500.00,'2026-07-01'),(41,21,448000.00,2167000.00,'2026-06-01'),(42,21,468000.00,3196000.00,'2026-07-01'),(43,22,463000.00,1621000.00,'2026-06-01'),(44,22,493000.00,2857500.00,'2026-07-01'),(45,23,682000.00,2572000.00,'2026-06-01'),(46,23,722000.00,3436500.00,'2026-07-01'),(47,24,251000.00,1484500.00,'2026-06-01'),(48,24,270000.00,1936000.00,'2026-07-01'),(49,25,716000.00,932500.00,'2026-06-01'),(50,25,748000.00,371000.00,'2026-07-01'),(51,26,472000.00,160000.00,'2026-06-01'),(52,26,489000.00,565500.00,'2026-07-01'),(53,27,248000.00,853000.00,'2026-06-01'),(54,27,265000.00,1288500.00,'2026-07-01'),(55,28,434000.00,1946000.00,'2026-06-01'),(56,28,458000.00,1861500.00,'2026-07-01'),(57,29,429000.00,2432000.00,'2026-06-01'),(58,29,456000.00,4091000.00,'2026-07-01'),(59,30,462000.00,2008000.00,'2026-06-01'),(60,30,489000.00,3696000.00,'2026-07-01'),(61,31,726000.00,2751500.00,'2026-06-01'),(62,31,759000.00,1014500.00,'2026-07-01'),(63,32,459000.00,1096000.00,'2026-06-01'),(64,32,486000.00,1634000.00,'2026-07-01'),(65,33,454000.00,2614000.00,'2026-06-01'),(66,33,478000.00,3182500.00,'2026-07-01'),(67,34,465000.00,910000.00,'2026-06-01'),(68,34,501000.00,857500.00,'2026-07-01'),(69,35,249000.00,678500.00,'2026-06-01'),(70,35,265000.00,1361000.00,'2026-07-01'),(71,36,239000.00,129500.00,'2026-06-01'),(72,36,255000.00,239500.00,'2026-07-01'),(73,37,1015000.00,731500.00,'2026-06-01'),(74,37,1096000.00,648500.00,'2026-07-01'),(75,38,1032000.00,242000.00,'2026-06-01'),(76,38,1078000.00,1489500.00,'2026-07-01'),(77,39,445000.00,385500.00,'2026-06-01'),(78,39,473000.00,2738500.00,'2026-07-01'),(79,40,952000.00,2008500.00,'2026-06-01'),(80,40,1003000.00,695000.00,'2026-07-01'),(81,41,242000.00,359000.00,'2026-06-01'),(82,41,251000.00,415500.00,'2026-07-01'),(83,42,430000.00,1634500.00,'2026-06-01'),(84,42,459000.00,1625000.00,'2026-07-01'),(85,43,433000.00,1891000.00,'2026-06-01'),(86,43,451000.00,1426500.00,'2026-07-01'),(87,44,445000.00,409500.00,'2026-06-01'),(88,44,478000.00,1897000.00,'2026-07-01'),(89,45,671000.00,1091500.00,'2026-06-01'),(90,45,706000.00,2260000.00,'2026-07-01'),(91,46,703000.00,2796500.00,'2026-06-01'),(92,46,755000.00,1293000.00,'2026-07-01'),(93,47,464000.00,221000.00,'2026-06-01'),(94,47,498000.00,846000.00,'2026-07-01'),(95,48,244000.00,421500.00,'2026-06-01'),(96,48,256000.00,1357500.00,'2026-07-01'),(97,49,690000.00,765500.00,'2026-06-01'),(98,49,741000.00,3016000.00,'2026-07-01'),(99,50,261000.00,1062000.00,'2026-06-01'),(100,50,271000.00,953000.00,'2026-07-01'),(101,1,0.00,725000.00,'2026-09-01');
 /*!40000 ALTER TABLE `achievements` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `activity_logs`
+--
+
+DROP TABLE IF EXISTS `activity_logs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `activity_logs` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `se_id` int unsigned NOT NULL,
+  `client_id` int unsigned NOT NULL,
+  `followup_count` int unsigned NOT NULL DEFAULT '0',
+  `activity_type_id` int unsigned NOT NULL,
+  `status_id` int unsigned NOT NULL,
+  `activity_date` date NOT NULL,
+  `client_policy_id` int unsigned DEFAULT NULL,
+  `next_follow_up_date` date DEFAULT NULL,
+  `remarks` text,
+  `duration_minutes` int unsigned NOT NULL,
+  `feedback_token` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `feedback_token` (`feedback_token`),
+  KEY `fk_activity_se` (`se_id`),
+  KEY `fk_activity_client` (`client_id`),
+  KEY `fk_activity_type` (`activity_type_id`),
+  KEY `fk_activity_status` (`status_id`),
+  KEY `fk_activity_policy` (`client_policy_id`),
+  CONSTRAINT `fk_activity_client` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+  CONSTRAINT `fk_activity_policy` FOREIGN KEY (`client_policy_id`) REFERENCES `policies` (`id`),
+  CONSTRAINT `fk_activity_se` FOREIGN KEY (`se_id`) REFERENCES `sales_executives` (`id`),
+  CONSTRAINT `fk_activity_status` FOREIGN KEY (`status_id`) REFERENCES `lead_statuses` (`id`),
+  CONSTRAINT `fk_activity_type` FOREIGN KEY (`activity_type_id`) REFERENCES `activity_types` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2941 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `activity_logs`
@@ -38,6 +94,21 @@ INSERT INTO `activity_logs` VALUES (1,'2026-06-02 11:34:00','2026-06-02 11:34:00
 UNLOCK TABLES;
 
 --
+-- Table structure for table `activity_types`
+--
+
+DROP TABLE IF EXISTS `activity_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `activity_types` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `activity_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `activity_name` (`activity_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `activity_types`
 --
 
@@ -46,6 +117,38 @@ LOCK TABLES `activity_types` WRITE;
 INSERT INTO `activity_types` VALUES (4,'Email'),(5,'Follow-up Meeting'),(2,'Phone Call'),(1,'Site Visit'),(3,'WhatsApp / SMS');
 /*!40000 ALTER TABLE `activity_types` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `client_feedbacks`
+--
+
+DROP TABLE IF EXISTS `client_feedbacks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `client_feedbacks` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `activity_log_id` int unsigned NOT NULL,
+  `client_id` int unsigned NOT NULL,
+  `se_id` int unsigned NOT NULL,
+  `rating` tinyint unsigned NOT NULL,
+  `strength_id` int unsigned DEFAULT NULL,
+  `improvement_id` int unsigned DEFAULT NULL,
+  `comments` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `activity_log_id` (`activity_log_id`),
+  KEY `fk_feedback_client` (`client_id`),
+  KEY `fk_feedback_se` (`se_id`),
+  KEY `fk_feedback_strength` (`strength_id`),
+  KEY `fk_feedback_improvement` (`improvement_id`),
+  CONSTRAINT `fk_feedback_activity_log` FOREIGN KEY (`activity_log_id`) REFERENCES `activity_logs` (`id`),
+  CONSTRAINT `fk_feedback_client` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+  CONSTRAINT `fk_feedback_improvement` FOREIGN KEY (`improvement_id`) REFERENCES `feedback_improvements` (`id`),
+  CONSTRAINT `fk_feedback_se` FOREIGN KEY (`se_id`) REFERENCES `sales_executives` (`id`),
+  CONSTRAINT `fk_feedback_strength` FOREIGN KEY (`strength_id`) REFERENCES `feedback_strengths` (`id`),
+  CONSTRAINT `client_feedbacks_chk_1` CHECK ((`rating` between 1 and 5))
+) ENGINE=InnoDB AUTO_INCREMENT=700 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `client_feedbacks`
@@ -58,6 +161,21 @@ INSERT INTO `client_feedbacks` VALUES (1,3,2,44,4,4,NULL,NULL,'2026-06-09 12:59:
 UNLOCK TABLES;
 
 --
+-- Table structure for table `client_types`
+--
+
+DROP TABLE IF EXISTS `client_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `client_types` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `type_name` (`type_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `client_types`
 --
 
@@ -66,6 +184,39 @@ LOCK TABLES `client_types` WRITE;
 INSERT INTO `client_types` VALUES (5,'Corporate / Enterprise'),(7,'Government / State-Owned'),(1,'Individual'),(4,'Medium Business'),(6,'NGO / Non-Profit'),(3,'Small Business'),(2,'Taxi / Delevery');
 /*!40000 ALTER TABLE `client_types` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `clients`
+--
+
+DROP TABLE IF EXISTS `clients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `clients` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `se_id` int unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `full_name` varchar(100) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `contact_number` varchar(20) NOT NULL,
+  `client_type_id` int unsigned NOT NULL,
+  `financial_level_id` int unsigned NOT NULL,
+  `rejection_reason_id` int unsigned DEFAULT NULL,
+  `lead_source_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_client_type` (`client_type_id`),
+  KEY `fk_financial_level` (`financial_level_id`),
+  KEY `fk_rejection_reason` (`rejection_reason_id`),
+  KEY `fk_lead_source` (`lead_source_id`),
+  KEY `fk_client_se` (`se_id`),
+  CONSTRAINT `fk_client_se` FOREIGN KEY (`se_id`) REFERENCES `sales_executives` (`id`),
+  CONSTRAINT `fk_client_type` FOREIGN KEY (`client_type_id`) REFERENCES `client_types` (`id`),
+  CONSTRAINT `fk_financial_level` FOREIGN KEY (`financial_level_id`) REFERENCES `financial_levels` (`id`),
+  CONSTRAINT `fk_lead_source` FOREIGN KEY (`lead_source_id`) REFERENCES `lead_sources` (`id`),
+  CONSTRAINT `fk_rejection_reason` FOREIGN KEY (`rejection_reason_id`) REFERENCES `rejection_reasons` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=906 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `clients`
@@ -78,6 +229,21 @@ INSERT INTO `clients` VALUES (1,20,'2026-06-02 09:04:00','2026-06-02 09:04:00','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `feedback_improvements`
+--
+
+DROP TABLE IF EXISTS `feedback_improvements`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `feedback_improvements` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `improvement_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `improvement_name` (`improvement_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `feedback_improvements`
 --
 
@@ -86,6 +252,21 @@ LOCK TABLES `feedback_improvements` WRITE;
 INSERT INTO `feedback_improvements` VALUES (1,'Hard to Understand'),(2,'Late to Meeting'),(4,'Rushed'),(3,'Too Pushy');
 /*!40000 ALTER TABLE `feedback_improvements` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `feedback_strengths`
+--
+
+DROP TABLE IF EXISTS `feedback_strengths`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `feedback_strengths` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `strength_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `strength_name` (`strength_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `feedback_strengths`
@@ -98,6 +279,21 @@ INSERT INTO `feedback_strengths` VALUES (4,'Clear Communication'),(1,'Excellent 
 UNLOCK TABLES;
 
 --
+-- Table structure for table `financial_levels`
+--
+
+DROP TABLE IF EXISTS `financial_levels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `financial_levels` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `level_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `level_name` (`level_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `financial_levels`
 --
 
@@ -106,6 +302,21 @@ LOCK TABLES `financial_levels` WRITE;
 INSERT INTO `financial_levels` VALUES (4,'Enterprise'),(3,'High'),(1,'Low'),(2,'Medium');
 /*!40000 ALTER TABLE `financial_levels` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `lead_sources`
+--
+
+DROP TABLE IF EXISTS `lead_sources`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lead_sources` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `source_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `source_name` (`source_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `lead_sources`
@@ -118,6 +329,21 @@ INSERT INTO `lead_sources` VALUES (1,'Cold Call'),(5,'NC Counter Visit'),(8,'Net
 UNLOCK TABLES;
 
 --
+-- Table structure for table `lead_statuses`
+--
+
+DROP TABLE IF EXISTS `lead_statuses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lead_statuses` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `status_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `status_name` (`status_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `lead_statuses`
 --
 
@@ -126,6 +352,26 @@ LOCK TABLES `lead_statuses` WRITE;
 INSERT INTO `lead_statuses` VALUES (1,'Pending'),(2,'Rejected'),(3,'Sold');
 /*!40000 ALTER TABLE `lead_statuses` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `managers`
+--
+
+DROP TABLE IF EXISTS `managers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `managers` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `full_name` varchar(100) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `email` varchar(100) NOT NULL,
+  `phone_number` varchar(20) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `phone_number_UNIQUE` (`phone_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `managers`
@@ -138,6 +384,24 @@ INSERT INTO `managers` VALUES (1,'admin123',1,'admin123@gmail.com','0712587404',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `policies`
+--
+
+DROP TABLE IF EXISTS `policies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `policies` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `policy_category_id` int unsigned NOT NULL,
+  `policy_name` varchar(100) NOT NULL,
+  `policy_details` text,
+  PRIMARY KEY (`id`),
+  KEY `fk_policy_category` (`policy_category_id`),
+  CONSTRAINT `fk_policy_category` FOREIGN KEY (`policy_category_id`) REFERENCES `policy_categories` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `policies`
 --
 
@@ -146,6 +410,21 @@ LOCK TABLES `policies` WRITE;
 INSERT INTO `policies` VALUES (1,1,'Ceylinco LIPS Insurance','Exclusive health, burglary, and accident cover for ladies (Up to Rs. 850,000 benefit).'),(2,1,'Ceylinco One Day Cover','Micro-insurance for individuals against road or home accidents.'),(3,1,'Children’s Health Policy','Hospitalization and Personal Accident coverage up to Rs. 50,000 for school children.'),(4,1,'Ceylinco Dheewara Udana','Dedicated protection plan for fishermen and their families (Up to Rs. 580,000 cover).'),(5,1,'Ceylinco Govi Pawura','Tailored accident and natural disaster cover for Farmers, Teachers, and Housewives.'),(6,1,'Ceylinco Doo Daruwo Rakshanaya','Family policy securing children\'s education if the breadwinner faces illness or death.'),(7,2,'Ceylinco VIP On The Spot (Comprehensive)','Islandwide roadside assistance, plastic surgery cover, 10-year manufacturing defect warranty, and alternative vehicle allocation.'),(8,2,'Ceylinco VIP Third Party Cover','Standard third-party liability extended with unique value-adds like serious illness medical cost distributions up to Rs. 150,000.'),(9,2,'Ceylinco VIP Motor Bike Cover','On-the-spot claim settlements, replacement motorcycle benefits, and personal accident safety parameters.'),(10,2,'Ceylinco VIP Three Wheel Cover','Comprehensive 3-wheel safety net covering outstanding lease installments (up to Rs. 100,000) during accident down-time.'),(11,3,'Ceylinco Suwa Sampatha','Surgical and hospitalization expense reimbursement across both private and government healthcare systems.'),(12,3,'Ceylinco Suwa Sampatha International','Elite worldwide medical program (excluding the USA) featuring 3 distinct treatment scheme tiers.'),(13,3,'Ceylinco Serious Illness Cover','Annual financial cushion up to Rs. 500,000 targeting critical, life-altering conditions.'),(14,4,'Ceylinco Support Line','Total contingency protection for SMEs covering natural disaster recovery and structural income loss.'),(15,4,'Burglary & House-Breaking Insurance','Compensation for identified structural assets or contents following forced unlawful entries.'),(16,4,'Goods In Transit Insurance','Domestic cargo transit protection coupled with supplementary riot, strike, and terrorism endorsements.'),(17,4,'Fidelity Guarantee Insurance','Indemnity safeguarding financial institutions or stores from fraudulent internal employee actions.'),(18,4,'Public Liability Insurance','Coverage securing companies against third-party bodily damage or property claims during operations.');
 /*!40000 ALTER TABLE `policies` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `policy_categories`
+--
+
+DROP TABLE IF EXISTS `policy_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `policy_categories` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `category_name` (`category_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `policy_categories`
@@ -158,6 +437,21 @@ INSERT INTO `policy_categories` VALUES (4,'Commercial & Business Protection Poli
 UNLOCK TABLES;
 
 --
+-- Table structure for table `policy_statuses`
+--
+
+DROP TABLE IF EXISTS `policy_statuses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `policy_statuses` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `status_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `status_name` (`status_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `policy_statuses`
 --
 
@@ -166,6 +460,21 @@ LOCK TABLES `policy_statuses` WRITE;
 INSERT INTO `policy_statuses` VALUES (1,'Active'),(3,'Cancelled'),(2,'Expired'),(5,'Pending'),(4,'Renewed');
 /*!40000 ALTER TABLE `policy_statuses` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `rejection_reasons`
+--
+
+DROP TABLE IF EXISTS `rejection_reasons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rejection_reasons` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `reason_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `reason_name` (`reason_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `rejection_reasons`
@@ -178,6 +487,40 @@ INSERT INTO `rejection_reasons` VALUES (2,'Chose competitor'),(5,'Financial cons
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sales`
+--
+
+DROP TABLE IF EXISTS `sales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sales` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `client_id` int unsigned NOT NULL,
+  `policy_id` int unsigned NOT NULL,
+  `se_id` int unsigned NOT NULL,
+  `activity_log_id` int unsigned DEFAULT NULL,
+  `issue_date` date NOT NULL,
+  `renewal_date` date DEFAULT NULL,
+  `premium_amount` decimal(12,2) NOT NULL,
+  `status_id` int unsigned NOT NULL,
+  `has_claimed` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_sales_client` (`client_id`),
+  KEY `fk_sales_policy` (`policy_id`),
+  KEY `fk_sales_se` (`se_id`),
+  KEY `fk_sales_status` (`status_id`),
+  KEY `fk_sales_activity_log` (`activity_log_id`),
+  CONSTRAINT `fk_sales_activity_log` FOREIGN KEY (`activity_log_id`) REFERENCES `activity_logs` (`id`),
+  CONSTRAINT `fk_sales_client` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+  CONSTRAINT `fk_sales_policy` FOREIGN KEY (`policy_id`) REFERENCES `policies` (`id`),
+  CONSTRAINT `fk_sales_se` FOREIGN KEY (`se_id`) REFERENCES `sales_executives` (`id`),
+  CONSTRAINT `fk_sales_status` FOREIGN KEY (`status_id`) REFERENCES `policy_statuses` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=680 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `sales`
 --
 
@@ -188,6 +531,28 @@ INSERT INTO `sales` VALUES (1,'2026-06-03 06:56:00','2026-06-03 06:56:00',1,7,20
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sales_executives`
+--
+
+DROP TABLE IF EXISTS `sales_executives`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sales_executives` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `full_name` varchar(100) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `se_level_id` int unsigned NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone_number` varchar(20) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `fk_se_level` (`se_level_id`),
+  CONSTRAINT `fk_se_level` FOREIGN KEY (`se_level_id`) REFERENCES `se_levels` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `sales_executives`
 --
 
@@ -196,6 +561,21 @@ LOCK TABLES `sales_executives` WRITE;
 INSERT INTO `sales_executives` VALUES (1,'Isuru Fernando',1,2,'isuru.fernando@gmail.com','0708013267','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(2,'Vindya Karunaratne',1,2,'vindya.karunaratne@gmail.com','783602606','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(3,'Rajitha Fernando',1,2,'rajitha.fernando@gmail.com','757468723','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(4,'Gayan Senanayake',1,2,'gayan.senanayake@gmail.com','753098050','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(5,'Ajith Jayasuriya',1,2,'ajith.jayasuriya@gmail.com','709788208','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(6,'Madhavi Dissanayake',1,4,'madhavi.dissanayake@gmail.com','712191361','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(7,'Malinda Silva',1,4,'malinda.silva@gmail.com','749909169','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(8,'Manjula Jayawardena',1,2,'manjula.jayawardena@gmail.com','764353462','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(9,'Gayan Wijesinghe',1,2,'gayan.wijesinghe@gmail.com','757510799','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(10,'Nadeesha Rathnayake',1,3,'nadeesha.rathnayake@gmail.com','711838425','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(11,'Manjula Perera',1,2,'manjula.perera@gmail.com','713542784','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(12,'Malinda Amarasinghe',1,3,'malinda.amarasinghe@gmail.com','708412411','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(13,'Chathurika Wickramasinghe',1,3,'chathurika.wickramasinghe@gmail.com','724493534','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(14,'Nilmini Karunaratne',1,3,'nilmini.karunaratne@gmail.com','784016400','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(15,'Chaminda Jayasuriya',1,1,'chaminda.jayasuriya@gmail.com','762427868','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(16,'Tharindu Mendis',1,1,'tharindu.mendis@gmail.com','701128059','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(17,'Kavindi Rathnayake',1,1,'kavindi.rathnayake@gmail.com','726204505','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(18,'Chathurika Herath',1,3,'chathurika.herath@gmail.com','743158692','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(19,'Dilshan Abeywickrama',1,3,'dilshan.abeywickrama@gmail.com','742260256','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(20,'Sunil Herath',1,2,'sunil.herath@gmail.com','744216073','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(21,'Nadun Weerasinghe',1,2,'nadun.weerasinghe@gmail.com','747543303','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(22,'Nimal Bandara',1,2,'nimal.bandara@gmail.com','775414586','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(23,'Nimal Dissanayake',1,3,'nimal.dissanayake@gmail.com','760142940','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(24,'Anusha Wickramasinghe',1,1,'anusha.wickramasinghe@gmail.com','719655698','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(25,'Shashini Wijesinghe',1,3,'shashini.wijesinghe@gmail.com','716934060','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(26,'Chaminda Ranasinghe',1,2,'chaminda.ranasinghe@gmail.com','745615951','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(27,'Iresha Perera',1,1,'iresha.perera@gmail.com','758465648','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(28,'Vindya Jayawardena',1,2,'vindya.jayawardena@gmail.com','723662994','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(29,'Chamodi Gunasekara',1,2,'chamodi.gunasekara@gmail.com','778044369','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(30,'Gayan Abeywickrama',1,2,'gayan.abeywickrama@gmail.com','767773872','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(31,'Kumudu Jayawardena',1,3,'kumudu.jayawardena@gmail.com','714895134','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(32,'Ruwan Perera',1,2,'ruwan.perera@gmail.com','743200379','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(33,'Isuru Kodithuwakku',1,2,'isuru.kodithuwakku@gmail.com','717693676','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(34,'Nuwan Ranasinghe',1,2,'nuwan.ranasinghe@gmail.com','742016328','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(35,'Madhavi Kodithuwakku',1,1,'madhavi.kodithuwakku@gmail.com','780831727','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(36,'Dinesh Mendis',1,1,'dinesh.mendis@gmail.com','767986872','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(37,'Sanjeewa Kodithuwakku',1,4,'sanjeewa.kodithuwakku@gmail.com','787434873','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(38,'Nilmini Rathnayake',1,4,'nilmini.rathnayake@gmail.com','757143455','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(39,'Lakshan Mendis',1,2,'lakshan.mendis@gmail.com','712236231','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(40,'Dilshan Silva',1,4,'dilshan.silva@gmail.com','776587603','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(41,'Lakshan Fernando',1,1,'lakshan.fernando@gmail.com','776909670','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(42,'Ishara Amarasinghe',1,2,'ishara.amarasinghe@gmail.com','764668893','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(43,'Lakshan Herath',1,2,'lakshan.herath@gmail.com','783467065','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(44,'Piumi Gunasekara',1,2,'piumi.gunasekara@gmail.com','772729806','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(45,'Dilani Weerasinghe',1,3,'dilani.weerasinghe@gmail.com','776665565','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(46,'Nadun Senanayake',1,3,'nadun.senanayake@gmail.com','775375564','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(47,'Sunil Dissanayake',1,2,'sunil.dissanayake@gmail.com','774170805','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(48,'Thilini Ranasinghe',1,1,'thilini.ranasinghe@gmail.com','741003309','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(49,'Chathurika Gunasekara',1,3,'chathurika.gunasekara@gmail.com','723271937','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(50,'Kasun Wickramasinghe',1,1,'kasun.wickramasinghe@gmail.com','755299124','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C'),(53,'Test Executive',1,1,'test@asd.com','0712345678','$2a$12$/kl/grFQtwirjVbrrq/lBO3xQbStpFvaVD4nx.okMrH8ZtRGvk09C');
 /*!40000 ALTER TABLE `sales_executives` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `se_levels`
+--
+
+DROP TABLE IF EXISTS `se_levels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `se_levels` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `level_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `level_name` (`level_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `se_levels`
@@ -216,4 +596,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-06  3:42:40
+-- Dump completed on 2026-09-06  4:12:31
