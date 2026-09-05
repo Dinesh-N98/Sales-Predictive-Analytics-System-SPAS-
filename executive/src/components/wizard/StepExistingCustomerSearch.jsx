@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useDataStore, useLookups } from "../../context/DataStoreContext";
 import { findById } from "../../data/mockData";
@@ -12,9 +12,44 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
   const { searchClients, getActivitiesForClient } = useDataStore();
   const { clientTypes, financialLevels, policies } = useLookups();
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState(null);
 
-  const results = query.trim().length >= 2 ? searchClients(query) : [];
   const selectedClient = draft.client;
+
+  useEffect(() => {
+    const normalizedQuery = query.trim();
+    if (normalizedQuery.length < 2) {
+      setResults([]);
+      setSearchError(null);
+      setSearchLoading(false);
+      return undefined;
+    }
+
+    let cancelled = false;
+    setSearchLoading(true);
+    setSearchError(null);
+
+    const timeoutId = window.setTimeout(async () => {
+      try {
+        const matches = await searchClients(normalizedQuery);
+        if (!cancelled) setResults(matches);
+      } catch (err) {
+        if (!cancelled) {
+          setResults([]);
+          setSearchError(err.message);
+        }
+      } finally {
+        if (!cancelled) setSearchLoading(false);
+      }
+    }, 250);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [query, searchClients]);
 
   function selectClient(client) {
     updateDraft({ client, selectedClientId: client.id, policyId: client.last_policy_id || null });
@@ -47,8 +82,8 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
             </button>
           </div>
           <div className="d-flex flex-wrap gap-2 mb-2">
-            {clientType && <span className="badge-status status-inquired">{clientType.type_name}</span>}
-            {financialLevel && <span className="badge-status status-pending">{financialLevel.level_name} value</span>}
+            {clientType && <span className="badge-segment">{clientType.type_name}</span>}
+            {financialLevel && <span className="badge-segment">{financialLevel.level_name} value</span>}
           </div>
           {lastPolicy && (
             <div className="small text-secondary">
@@ -78,7 +113,11 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
         />
       </div>
 
-      {query.trim().length >= 2 && results.length === 0 && (
+      {searchLoading && <p className="text-secondary small">Searching customers...</p>}
+
+      {searchError && <div className="alert alert-danger small">{searchError}</div>}
+
+      {!searchLoading && !searchError && query.trim().length >= 2 && results.length === 0 && (
         <EmptyState
           icon="bi-person-x"
           title="No matches"

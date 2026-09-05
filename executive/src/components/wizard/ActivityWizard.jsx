@@ -47,7 +47,11 @@ function getStepSequence(draft) {
   return ["activityType", "customerType", "customer", "policy", "followup", "confirm"];
 }
 
-function getStepValidity(stepKey, draft) {
+function getStatusId(leadStatuses, name) {
+  return leadStatuses.find((status) => status.status_name.toLowerCase() === name.toLowerCase())?.id ?? null;
+}
+
+function getStepValidity(stepKey, draft, leadStatuses) {
   switch (stepKey) {
     case "activityType":
       return Boolean(draft.activityTypeId);
@@ -60,7 +64,7 @@ function getStepValidity(stepKey, draft) {
     case "policy":
       return isPolicyStepValid(draft);
     case "followup":
-      return isFollowUpStepValid(draft);
+      return isFollowUpStepValid(draft, leadStatuses);
     case "confirm":
       return true;
     default:
@@ -72,8 +76,8 @@ export default function ActivityWizard() {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentSe } = useAuth();
-  const { addClient, updateClient, addActivityLog, addSale } = useDataStore();
-  const { lookupsLoading, lookupsError } = useLookups();
+  const { addClient, updateClient, addActivityLog, updateActivityLog, addSale } = useDataStore();
+  const { lookupsLoading, lookupsError, leadStatuses } = useLookups();
 
   const prefillClient = location.state?.prefillClient || null;
 
@@ -81,11 +85,16 @@ export default function ActivityWizard() {
   const [stepIndex, setStepIndex] = useState(0);
   const [isDone, setIsDone] = useState(false);
   const [savedSummary, setSavedSummary] = useState(null);
+  const [saveError, setSaveError] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const sequence = getStepSequence(draft);
   const stepKey = sequence[stepIndex];
   const isLastStep = stepIndex === sequence.length - 1;
-  const isValid = getStepValidity(stepKey, draft);
+  const isValid = getStepValidity(stepKey, draft, leadStatuses);
+  const pendingStatusId = getStatusId(leadStatuses, "Pending");
+  const soldStatusId = getStatusId(leadStatuses, "Sold");
+  const rejectedStatusId = getStatusId(leadStatuses, "Rejected");
 
   function updateDraft(patch) {
     setDraft((prev) => ({ ...prev, ...patch }));
@@ -108,47 +117,72 @@ export default function ActivityWizard() {
     setStepIndex(0);
     setIsDone(false);
     setSavedSummary(null);
+    setSaveError(null);
+    setIsSaving(false);
   }
 
-  function handleSave() {
+  async function handleSave() {
+    setSaveError(null);
+    setIsSaving(true);
     let clientId;
 
-    if (draft.customerMode === "new") {
-      const created = addClient({ ...draft.client, last_policy_id: draft.policyId });
-      clientId = created.id;
-    } else {
-      clientId = draft.selectedClientId;
-      updateClient(clientId, {
-        last_policy_id: draft.policyId,
-        rejection_reason_id: draft.status_id === 4 ? draft.rejection_reason_id : draft.client.rejection_reason_id,
-      });
+    try {
+      if (draft.customerMode === "new") {
+        const created = addClient({ ...draft.client, last_policy_id: draft.policyId });
+        clientId = created.id;
+      } else {
+        clientId = draft.selectedClientId;
+        updateClient(clientId, {
+          last_policy_id: draft.policyId,
+          rejection_reason_id: draft.status_id === rejectedStatusId ? draft.rejection_reason_id : draft.client.rejection_reason_id,
+        });
+      }
+
+      const activityDate = new Date().toISOString().slice(0, 10);
+      const activityPayload = {
+        clientId,
+        activityTypeId: draft.activityTypeId,
+        statusId: draft.status_id === soldStatusId ? pendingStatusId : draft.status_id,
+        premiumAmount: null,
+        activityDate,
+        clientPolicyId: draft.policyId || null,
+        nextFollowUpDate: draft.next_follow_up_date || null,
+        remarks: draft.remarks || "",
+        durationMinutes: draft.duration_minutes ? Number(draft.duration_minutes) : 0,
+      };
+      const savedActivity = await addActivityLog(activityPayload);
+
+      if (draft.status_id === soldStatusId) {
+        try {
+          await updateActivityLog(savedActivity.id, {
+            ...activityPayload,
+            statusId: soldStatusId,
+            premiumAmount: Number(draft.premium_amount),
+          });
+        } catch (error) {
+          const conflictPrefix = error.status === 409 ? "Sold conflict" : "Sold update failed";
+          throw new Error(`${conflictPrefix}: activity was logged, but it was not marked Sold. ${error.message}`);
+        }
+      }
+
+      if (draft.status_id === soldStatusId) {
+        addSale({
+          client_id: clientId,
+          policy_id: draft.policyId,
+          se_id: currentSe.id,
+          issue_date: new Date().toISOString().slice(0, 10),
+          renewal_date: null,
+          premium_amount: Number(draft.premium_amount),
+        });
+      }
+
+      setSavedSummary({ clientName: draft.client?.full_name, statusId: draft.status_id });
+      setIsDone(true);
+    } catch (error) {
+      setSaveError(error.message || "Activity could not be saved.");
+    } finally {
+      setIsSaving(false);
     }
-
-    addActivityLog({
-      se_id: currentSe.id,
-      client_id: clientId,
-      activity_type_id: draft.activityTypeId,
-      status_id: draft.status_id,
-      activity_date: new Date().toISOString(),
-      policy_id: draft.policyId,
-      next_follow_up_date: draft.next_follow_up_date || null,
-      remarks: draft.remarks || "",
-      duration_minutes: draft.duration_minutes ? Number(draft.duration_minutes) : null,
-    });
-
-    if (draft.status_id === 3) {
-      addSale({
-        client_id: clientId,
-        policy_id: draft.policyId,
-        se_id: currentSe.id,
-        issue_date: new Date().toISOString().slice(0, 10),
-        renewal_date: null,
-        premium_amount: Number(draft.premium_amount),
-      });
-    }
-
-    setSavedSummary({ clientName: draft.client?.full_name, statusId: draft.status_id });
-    setIsDone(true);
   }
 
   function renderStep() {
@@ -229,6 +263,12 @@ export default function ActivityWizard() {
     <div className="app-main--with-action-bar">
       <StepIndicator totalSteps={sequence.length} currentStep={stepIndex + 1} />
 
+      {saveError && (
+        <div className="alert alert-danger mx-3" role="alert">
+          <strong>Could not save activity.</strong> {saveError}
+        </div>
+      )}
+
       {renderStep()}
 
       <div className="wizard-action-bar">
@@ -241,10 +281,10 @@ export default function ActivityWizard() {
             <button
               type="button"
               className="btn btn-gold flex-grow-1"
-              disabled={!isValid}
+              disabled={!isValid || isSaving}
               onClick={isLastStep ? handleSave : goNext}
             >
-              {isLastStep ? "Save activity" : "Continue"}
+              {isSaving ? "Saving..." : isLastStep ? "Save activity" : "Continue"}
             </button>
           )}
         </div>

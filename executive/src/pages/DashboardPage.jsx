@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useDataStore } from "../context/DataStoreContext";
-import { ACTIVITY_TYPES, findById } from "../data/mockData";
+import { useDataStore, useLookups } from "../context/DataStoreContext";
 import StatusBadge from "../components/common/StatusBadge";
 import EmptyState from "../components/common/EmptyState";
 
@@ -20,7 +19,8 @@ function relativeDue(dateStr) {
 
 export default function DashboardPage() {
   const { currentSe } = useAuth();
-  const { getActivitiesForSe, getOpenFollowUpsForSe, getClientById, sales } = useDataStore();
+  const { getActivitiesForSe, getOpenFollowUpsForSe, getClientById, sales, dashboardDataError } = useDataStore();
+  const { activityTypes } = useLookups();
   const navigate = useNavigate();
 
   const myActivities = getActivitiesForSe(currentSe.id);
@@ -49,6 +49,8 @@ export default function DashboardPage() {
     <div>
       <h4 className="mb-1">Hey, {currentSe.full_name.split(" ")[0]}</h4>
       <p className="text-secondary mb-3">Here's where things stand today.</p>
+
+      {dashboardDataError && <div className="alert alert-danger">{dashboardDataError}</div>}
 
       <div className="stat-strip mb-3">
         <div className="stat-tile">
@@ -85,15 +87,20 @@ export default function DashboardPage() {
         <div className="list-card mb-4">
           {openFollowUps.map((log) => {
             const client = getClientById(log.client_id);
-            if (!client) return null;
             return (
-              <button type="button" key={log.id} className="list-row" onClick={() => startFollowUp(client)}>
+              <button
+                type="button"
+                key={log.id}
+                className="list-row"
+                disabled={!client}
+                onClick={() => client && startFollowUp(client)}
+              >
                 <span className="list-row-icon">
                   <i className="bi bi-person-fill" />
                 </span>
                 <span className="list-row-body">
-                  <span className="list-row-title">{client.full_name}</span>
-                  <span className="list-row-sub">{client.contact_number}</span>
+                  <span className="list-row-title">{client?.full_name || log.client_name || "Unknown customer"}</span>
+                  <span className="list-row-sub">{client?.contact_number || ""}</span>
                 </span>
                 <span className="list-row-meta text-tabular">{relativeDue(log.next_follow_up_date)}</span>
               </button>
@@ -115,16 +122,16 @@ export default function DashboardPage() {
         <div className="list-card">
           {recentActivities.map((log) => {
             const client = getClientById(log.client_id);
-            const activityType = findById(ACTIVITY_TYPES, log.activity_type_id);
+            const activityType = activityTypes.find((type) => type.id === log.activity_type_id);
             return (
               <div className="list-row" key={log.id} style={{ cursor: "default" }}>
                 <span className="list-row-icon">
                   <i className={`bi ${activityType?.icon || "bi-circle"}`} />
                 </span>
                 <span className="list-row-body">
-                  <span className="list-row-title">{client?.full_name || "Unknown customer"}</span>
+                  <span className="list-row-title">{client?.full_name || log.client_name || "Unknown customer"}</span>
                   <span className="list-row-sub">
-                    {activityType?.activity_name} · {formatDateShort(log.activity_date)}
+                    {activityType?.activity_name || log.activity_type_name} · {formatDateShort(log.activity_date)}
                   </span>
                 </span>
                 <span className="list-row-meta">

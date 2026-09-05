@@ -24,15 +24,6 @@ export const SALES_EXECUTIVES = [
 
 export const DEMO_PASSWORD = "demo123";
 
-// --- activity_types ---------------------------------------------------------
-export const ACTIVITY_TYPES = [
-  { id: 1, activity_name: "Field Visit", icon: "bi-geo-alt-fill" },
-  { id: 2, activity_name: "Phone Call", icon: "bi-telephone-fill" },
-  { id: 3, activity_name: "WhatsApp / SMS", icon: "bi-whatsapp" },
-  { id: 4, activity_name: "Email", icon: "bi-envelope-fill" },
-  { id: 5, activity_name: "Meet-up", icon: "bi-people-fill" },
-];
-
 // --- lead_sources -------------------------------------------------------
 export const LEAD_SOURCES = [
   { id: 1, source_name: "Cold Call" },
@@ -77,14 +68,6 @@ export const POLICY_STATUSES = [
   { id: 2, status_name: "Expired" },
   { id: 3, status_name: "Renewed" },
   { id: 4, status_name: "Cancelled" },
-];
-
-// --- lead_statuses ---------------------------------------------------------
-export const LEAD_STATUSES = [
-  { id: 1, status_name: "Inquired" },
-  { id: 2, status_name: "Pending" },
-  { id: 3, status_name: "Sold" },
-  { id: 4, status_name: "Rejected" },
 ];
 
 // --- policy_categories -------------------------------------------------------

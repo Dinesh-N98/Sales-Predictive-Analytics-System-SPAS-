@@ -13,6 +13,20 @@ $ceylinco-pure-white:   #FFFFFF; // rgb(255, 255, 255) - White-space & section b
 $ceylinco-light-gray:   #F1F1F1; // rgb(241, 241, 241) - Alternating block backgrounds
 $ceylinco-footer-dark:  #1C1C1C; // rgb(28, 28, 28)    - Extra dark canvas for portal footer
 
+// Accessible semantic badge palette. Brand yellow remains reserved for actions
+// and highlights rather than status or secondary labels.
+$status-sold-text:       #176B2C;
+$status-sold-bg:         #E8F4EB;
+$status-rejected-text:   #A61B29;
+$status-rejected-bg:     #FBEAEC;
+$status-pending-text:    #7A5200;
+$status-pending-bg:      #FFF3D6;
+$status-inquired-text:   #174A7C;
+$status-inquired-bg:     #EAF2FA;
+$segment-text:           #46515C;
+$segment-bg:             #EEF1F4;
+$segment-border:         #CBD3DA;
+
 // ==========================================================================
 // 2. GLOBAL BOOTSTRAP VARIABLE OVERRIDES
 // ==========================================================================
@@ -76,7 +90,7 @@ $link-decoration:     none,
   }
 }
 
-// Soft Translucent Policy & Claim Status Badges (10% Background Opacity)
+// Status and customer-segment badges ---------------------------------------
 .badge-status {
   border-radius: 999px;
   padding: 4px 12px;
@@ -85,9 +99,24 @@ $link-decoration:     none,
   display: inline-flex;
   align-items: center;
 
-  &.status-active  { background-color: rgba(#1F8A3B, 0.1); color: #1F8A3B; } // Semantic Success Green
-  &.status-pending { background-color: rgba($ceylinco-gold-yellow, 0.1); color: $ceylinco-gold-yellow; } // Semantic Warning Yellow
-  &.status-lapsed  { background-color: rgba($ceylinco-alert-red, 0.1); color: $ceylinco-alert-red; } // Semantic Error Red
+  &.status-inquired { background-color: $status-inquired-bg; color: $status-inquired-text; }
+  &.status-pending  { background-color: $status-pending-bg; color: $status-pending-text; }
+  &.status-sold     { background-color: $status-sold-bg; color: $status-sold-text; }
+  &.status-rejected { background-color: $status-rejected-bg; color: $status-rejected-text; }
+  &.status-active   { background-color: $status-sold-bg; color: $status-sold-text; }
+  &.status-lapsed   { background-color: $status-rejected-bg; color: $status-rejected-text; }
+}
+
+.badge-segment {
+  border: 1px solid $segment-border;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  background-color: $segment-bg;
+  color: $segment-text;
 }
 
 // Contrast Guardrail for Gold/Yellow Promotional Background Bands

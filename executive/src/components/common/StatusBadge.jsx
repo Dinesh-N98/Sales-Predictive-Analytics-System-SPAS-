@@ -1,15 +1,9 @@
-import { LEAD_STATUSES } from "../../data/mockData";
-
-const STATUS_CLASS_BY_ID = {
-  1: "status-inquired", // Inquired
-  2: "status-pending", // Pending
-  3: "status-sold", // Sold
-  4: "status-rejected", // Rejected
-};
+import { useLookups } from "../../context/DataStoreContext";
 
 export default function StatusBadge({ statusId }) {
-  const status = LEAD_STATUSES.find((s) => s.id === statusId);
+  const { leadStatuses } = useLookups();
+  const status = leadStatuses.find((s) => s.id === statusId);
   if (!status) return null;
-  const cls = STATUS_CLASS_BY_ID[statusId] || "status-pending";
+  const cls = `status-${status.status_name.toLowerCase().replace(/\s+/g, "-")}`;
   return <span className={`badge-status ${cls}`}>{status.status_name}</span>;
 }

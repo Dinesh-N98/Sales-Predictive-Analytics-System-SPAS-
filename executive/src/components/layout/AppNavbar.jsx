@@ -26,13 +26,13 @@ export default function AppNavbar() {
 
   return (
     <div className="portal-navbar navbar-portal justify-content-between">
-      <div className="brand-mark">
+      <button type="button" className="brand-mark brand-home-button" onClick={() => navigate("/")} aria-label="Go to dashboard">
         <span className="brand-chip">C</span>
         <span>
           Logsheet
           <span className="brand-sub">Ceylinco Sales Portal</span>
         </span>
-      </div>
+      </button>
 
       <div className="d-flex align-items-center gap-2">
         <button

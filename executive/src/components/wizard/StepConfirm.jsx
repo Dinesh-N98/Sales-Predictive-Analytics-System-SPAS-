@@ -14,6 +14,8 @@ function Row({ label, value }) {
 
 export default function StepConfirm({ draft }) {
   const { activityTypes, clientTypes, leadStatuses, policies, policyCategories, rejectionReasons } = useLookups();
+  const soldStatusId = leadStatuses.find((status) => status.status_name.toLowerCase() === "sold")?.id;
+  const rejectedStatusId = leadStatuses.find((status) => status.status_name.toLowerCase() === "rejected")?.id;
   const activityType = findById(activityTypes, draft.activityTypeId);
   const policy = findById(policies, draft.policyId);
   const category = policy ? findById(policyCategories, policy.policy_category_id) : null;
@@ -36,8 +38,8 @@ export default function StepConfirm({ draft }) {
           label="Status"
           value={status ? <StatusBadge statusId={draft.status_id} /> : null}
         />
-        {draft.status_id === 3 && <Row label="Premium amount" value={`Rs. ${Number(draft.premium_amount).toLocaleString()}`} />}
-        {draft.status_id === 4 && <Row label="Rejection reason" value={rejectionReason?.reason_name} />}
+        {draft.status_id === soldStatusId && <Row label="Premium amount" value={`Rs. ${Number(draft.premium_amount).toLocaleString()}`} />}
+        {draft.status_id === rejectedStatusId && <Row label="Rejection reason" value={rejectionReason?.reason_name} />}
         {draft.next_follow_up_date && <Row label="Next follow-up" value={draft.next_follow_up_date} />}
         {draft.duration_minutes && <Row label="Duration" value={`${draft.duration_minutes} min`} />}
       </div>

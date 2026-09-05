@@ -35,6 +35,12 @@ h1, h2, h3, h4, h5, h6 {
   color: theme.$ceylinco-pure-black;
 }
 
+// Bootstrap maps text-secondary to the bright brand yellow; use the existing
+// dark-gray token for readable supporting text on white surfaces.
+.text-secondary {
+  color: theme.$ceylinco-dark-gray !important;
+}
+
 .text-tabular {
   font-variant-numeric: tabular-nums;
 }
@@ -117,6 +123,14 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 800;
     font-size: 1rem;
     color: theme.$ceylinco-pure-black;
+
+    &.brand-home-button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
 
     .brand-chip {
       width: 30px;
@@ -375,14 +389,6 @@ h1, h2, h3, h4, h5, h6 {
   .empty-copy {
     font-size: 0.85rem;
   }
-}
-
-// Status badges (extends theme's .badge-status with the lead-status set) --
-.badge-status {
-  &.status-inquired { background-color: rgba(theme.$ceylinco-deep-blue, 0.1); color: theme.$ceylinco-deep-blue; }
-  &.status-sold     { background-color: rgba(#1F8A3B, 0.12); color: #1F8A3B; }
-  &.status-rejected { background-color: rgba(theme.$ceylinco-alert-red, 0.1); color: theme.$ceylinco-alert-red; }
-  // .status-pending already defined in theme-style.scss
 }
 
 // Wizard: stamped step indicator ------------------------------------------
