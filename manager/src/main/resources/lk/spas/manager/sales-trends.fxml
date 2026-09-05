@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="lk.spas.manager.controller.SalesTrendsController"
+      fx:id="root" alignment="TOP_CENTER" spacing="12" styleClass="root">
+    <padding><Insets top="16" bottom="16" left="20" right="20"/></padding>
+
+    <HBox maxWidth="900" alignment="CENTER_LEFT" spacing="8" styleClass="navbar-portal">
+        <Label text="Sales Trends" styleClass="heading-2" HBox.hgrow="ALWAYS"/>
+        <ComboBox fx:id="executiveComboBox" promptText="SE" prefWidth="150"/>
+        <ComboBox fx:id="levelComboBox" promptText="SE Level" prefWidth="120"/>
+        <DatePicker fx:id="startDatePicker" promptText="Start Date" prefWidth="120"/>
+        <DatePicker fx:id="endDatePicker" promptText="End Date" prefWidth="120"/>
+        <Button fx:id="refreshButton" text="Apply" onAction="#handleRefresh" styleClass="button-info"/>
+    </HBox>
+
+    <ProgressIndicator fx:id="loadingIndicator" visible="false" managed="false"/>
+    <Label fx:id="emptyLabel" text="No sales found for the selected filters."
+           visible="false" managed="false" styleClass="text-strong"/>
+    <HBox fx:id="errorBanner" visible="false" managed="false" spacing="10" alignment="CENTER" styleClass="bg-section-alt">
+        <Label fx:id="errorLabel" wrapText="true"/>
+        <Button fx:id="retryButton" text="Retry" styleClass="button-danger"/>
+    </HBox>
+
+    <LineChart fx:id="trendChart" animated="false" legendVisible="false" visible="false" managed="false"
+               title="Sales Amount Over Time" VBox.vgrow="NEVER">
+        <xAxis><CategoryAxis label="Date"/></xAxis>
+        <yAxis><NumberAxis label="Total Sales Amount" forceZeroInRange="false"/></yAxis>
+    </LineChart>
+
+    <TableView fx:id="trendTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="dateColumn" text="Date" prefWidth="180"/>
+            <TableColumn fx:id="salesCountColumn" text="Sales Count" prefWidth="150"/>
+            <TableColumn fx:id="totalAmountColumn" text="Total Amount" prefWidth="180"/>
+        </columns>
+    </TableView>
+</VBox>

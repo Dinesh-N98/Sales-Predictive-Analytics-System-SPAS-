@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="lk.spas.manager.controller.LoginController"
+           styleClass="root">
+    <VBox alignment="CENTER" spacing="16" maxWidth="360">
+        <Label text="Manager Portal" styleClass="heading-1"/>
+
+        <TextField fx:id="phoneField" promptText="Phone Number"/>
+        <PasswordField fx:id="passwordField" promptText="Password"/>
+
+        <Label fx:id="errorLabel" styleClass="text-strong"
+               style="-fx-text-fill: -ceylinco-alert-red;" visible="false"/>
+
+        <Button text="Log In" onAction="#handleLogin" styleClass="button-primary"/>
+        <ProgressIndicator fx:id="loadingSpinner" visible="false" managed="false"/>
+    </VBox>
+</StackPane>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="lk.spas.manager.controller.ManageExecutiveController"
+    fx:id="root"
+      alignment="TOP_CENTER" spacing="16" styleClass="root">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <Label text="Manage Executive" styleClass="heading-2"/>
+
+    <HBox spacing="10" maxWidth="900" alignment="CENTER_LEFT">
+        <Button fx:id="newExecutiveButton" text="New Executive" onAction="#handleNewExecutive"
+                styleClass="button-primary"/>
+        <Button fx:id="editButton" text="Edit" onAction="#handleEditExecutive"
+                styleClass="button-secondary"/>
+    </HBox>
+
+    <ProgressIndicator fx:id="loadingIndicator" visible="false" managed="false"/>
+    <Label fx:id="emptyLabel" text="No executives found." visible="false" managed="false" styleClass="text-strong"/>
+    <HBox fx:id="errorBanner" visible="false" managed="false" spacing="10" alignment="CENTER" styleClass="bg-section-alt">
+        <Label fx:id="errorLabel" wrapText="true"/>
+        <Button fx:id="retryButton" text="Retry" styleClass="button-danger"/>
+    </HBox>
+
+    <TableView fx:id="executiveTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colName" text="Full Name" prefWidth="180"/>
+            <TableColumn fx:id="colPhone" text="Phone" prefWidth="130"/>
+            <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
+            <TableColumn fx:id="colLevel" text="Level" prefWidth="140"/>
+            <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="previousPageButton" text="Previous" onAction="#handlePreviousPage"/>
+        <Label fx:id="pageLabel" text="Page 1"/>
+        <Button fx:id="nextPageButton" text="Next" onAction="#handleNextPage"/>
+        <Button fx:id="refreshButton" text="Refresh" onAction="#handleRefresh"/>
+        <Button fx:id="deleteButton" text="Delete" onAction="#handleDeleteExecutive"/>
+    </HBox>
+
+    <Label fx:id="statusLabel" text=""/>
+</VBox>

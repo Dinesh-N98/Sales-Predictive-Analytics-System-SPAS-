@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="lk.spas.manager.controller.AtRiskActivitiesController"
+      fx:id="root" alignment="TOP_CENTER" spacing="16" styleClass="root">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <HBox maxWidth="900" alignment="CENTER_LEFT" spacing="10" styleClass="navbar-portal">
+        <Label text="At-Risk Activities" styleClass="heading-2" HBox.hgrow="ALWAYS"/>
+        <Label text="Limit" styleClass="text-strong"/>
+        <TextField fx:id="limitField" text="10" prefWidth="70"/>
+        <Button fx:id="refreshButton" text="Refresh" onAction="#handleRefresh" styleClass="button-info"/>
+    </HBox>
+
+    <ProgressIndicator fx:id="loadingIndicator" visible="false" managed="false"/>
+    <Label fx:id="emptyLabel" text="No at-risk activities found." visible="false" managed="false" styleClass="text-strong"/>
+    <HBox fx:id="errorBanner" visible="false" managed="false" spacing="10" alignment="CENTER" styleClass="bg-section-alt">
+        <Label fx:id="errorLabel" wrapText="true"/>
+        <Button fx:id="retryButton" text="Retry" styleClass="button-danger"/>
+    </HBox>
+
+    <TableView fx:id="atRiskActivitiesTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="seNameColumn" text="Sales Executive" prefWidth="190"/>
+            <TableColumn fx:id="activityNameColumn" text="Activity" prefWidth="250"/>
+            <TableColumn fx:id="predictionColumn" text="Prediction" prefWidth="150"/>
+            <TableColumn fx:id="probabilityRejectedColumn" text="Probability Rejected" prefWidth="150"/>
+        </columns>
+    </TableView>
+</VBox>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="lk.spas.manager.controller.DecisionAidController" fx:id="root" spacing="16" styleClass="root">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    <Label text="Decision Aid" styleClass="heading-2"/>
+    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+        <Tab text="Activity Outcome">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                <VBox spacing="14" maxWidth="900"><padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                    <Label text="Choose a scored activity" styleClass="text-strong"/>
+                    <ComboBox fx:id="activityComboBox" maxWidth="Infinity" promptText="Sales executive - activity"/>
+                    <Button text="Get Prediction" onAction="#handleActivityPrediction" styleClass="button-info"/>
+                    <Label fx:id="activityErrorLabel" wrapText="true" styleClass="text-strong"/>
+                    <VBox fx:id="activityResult" visible="false" managed="false" spacing="10" styleClass="bg-section-alt">
+                        <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                        <Label text="Prediction" styleClass="heading-3"/><Label fx:id="activityPredictionLabel" styleClass="heading-2"/>
+                        <Label text="Sold"/><ProgressBar fx:id="soldBar" maxWidth="Infinity"/><Label fx:id="soldProbabilityLabel"/>
+                        <Label text="Pending"/><ProgressBar fx:id="pendingBar" maxWidth="Infinity"/><Label fx:id="pendingProbabilityLabel"/>
+                        <Label text="Rejected"/><ProgressBar fx:id="rejectedBar" maxWidth="Infinity"/><Label fx:id="rejectedProbabilityLabel"/>
+                    </VBox>
+                    <TitledPane text="Additional Insights" expanded="false" maxWidth="Infinity">
+                        <content><Label text="Detailed explanation data is not yet available from the prediction model." wrapText="true"/></content>
+                    </TitledPane>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+        <Tab text="SE Target Forecast">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+                <VBox spacing="14" maxWidth="900"><padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                    <Label text="Sales executive" styleClass="text-strong"/>
+                    <ComboBox fx:id="executiveComboBox" maxWidth="Infinity" promptText="Select a sales executive"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT"><Label text="Month"/><TextField fx:id="monthField" promptText="yyyy-MM" prefWidth="110"/><Label fx:id="monthValidationLabel" styleClass="text-strong"/></HBox>
+                    <Button text="Get Prediction" onAction="#handleForecastPrediction" styleClass="button-info"/>
+                    <Label fx:id="forecastErrorLabel" wrapText="true" styleClass="text-strong"/>
+                    <VBox fx:id="forecastResult" visible="false" managed="false" spacing="8" styleClass="bg-section-alt">
+                        <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                        <Label text="SE Target Forecast" styleClass="heading-3"/><Label fx:id="forecastLevelLabel"/>
+                        <Label text="Target amount"/><Label fx:id="targetAmountLabel"/><Label text="Achieved amount"/><Label fx:id="achievedAmountLabel"/>
+                        <Label text="Will hit target"/><Label fx:id="forecastPredictionLabel" styleClass="heading-3"/><Label text="Probability"/><Label fx:id="forecastProbabilityLabel"/>
+                    </VBox>
+                    <TitledPane text="Additional Insights" expanded="false" maxWidth="Infinity">
+                        <content><Label text="Detailed explanation data is not yet available from the prediction model." wrapText="true"/></content>
+                    </TitledPane>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+    </TabPane>
+</VBox>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="lk.spas.manager.controller.AchievementVsTargetController"
+      fx:id="root" alignment="TOP_CENTER" spacing="12" styleClass="root">
+    <padding><Insets top="16" bottom="16" left="20" right="20"/></padding>
+
+    <HBox maxWidth="900" alignment="CENTER_LEFT" spacing="8" styleClass="navbar-portal">
+        <Label text="Achievement vs Target" styleClass="heading-2" HBox.hgrow="ALWAYS"/>
+        <ComboBox fx:id="executiveComboBox" promptText="SE" prefWidth="150"/>
+        <TextField fx:id="startMonthField" promptText="yyyy-MM" prefWidth="90"/>
+        <Label fx:id="startMonthValidationLabel" visible="false" managed="false"/>
+        <TextField fx:id="endMonthField" promptText="yyyy-MM" prefWidth="90"/>
+        <Label fx:id="endMonthValidationLabel" visible="false" managed="false"/>
+        <Button fx:id="refreshButton" text="Apply" onAction="#handleRefresh" styleClass="button-info"/>
+    </HBox>
+
+    <ProgressIndicator fx:id="loadingIndicator" visible="false" managed="false"/>
+    <Label fx:id="emptyLabel" text="No achievement data found for the selected filters."
+           visible="false" managed="false" styleClass="text-strong"/>
+    <HBox fx:id="errorBanner" visible="false" managed="false" spacing="10" alignment="CENTER" styleClass="bg-section-alt">
+        <Label fx:id="errorLabel" wrapText="true"/>
+        <Button fx:id="retryButton" text="Retry" styleClass="button-danger"/>
+    </HBox>
+
+    <LineChart fx:id="achievementChart" animated="false" legendVisible="false" visible="false" managed="false"
+               title="Achievement Percentage Over Time" VBox.vgrow="NEVER">
+        <xAxis><CategoryAxis label="Month"/></xAxis>
+        <yAxis><NumberAxis label="Achievement %" forceZeroInRange="false"/></yAxis>
+    </LineChart>
+
+    <TableView fx:id="achievementTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="seNameColumn" text="Sales Executive" prefWidth="150"/>
+            <TableColumn fx:id="levelColumn" text="Level" prefWidth="120"/>
+            <TableColumn fx:id="monthColumn" text="Month" prefWidth="100"/>
+            <TableColumn fx:id="targetAmountColumn" text="Target Amount" prefWidth="140"/>
+            <TableColumn fx:id="achievedAmountColumn" text="Achieved Amount" prefWidth="150"/>
+            <TableColumn fx:id="achievementPercentageColumn" text="Achievement %" prefWidth="140"/>
+        </columns>
+    </TableView>
+</VBox>

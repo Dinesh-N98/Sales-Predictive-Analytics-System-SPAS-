@@ -1,0 +1,637 @@
+// ==========================================================================
+// App-level styling — layered on top of theme-style.scss
+// Everything here consumes the Ceylinco tokens via the `theme` namespace so
+// there is a single source of truth for color.
+// ==========================================================================
+@use "./theme-style" as theme;
+
+:root {
+  --ceylinco-gold: #{theme.$ceylinco-gold-yellow};
+  --ceylinco-blue: #{theme.$ceylinco-deep-blue};
+  --ceylinco-red: #{theme.$ceylinco-alert-red};
+  --ceylinco-green: #1f8a3b;
+  --ceylinco-gray: #{theme.$ceylinco-dark-gray};
+  --ceylinco-light-gray: #{theme.$ceylinco-light-gray};
+  --ceylinco-black: #{theme.$ceylinco-pure-black};
+  --nav-height: 60px;
+  --action-bar-height: 76px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: theme.$ceylinco-pure-black;
+}
+
+.text-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+// Buttons -------------------------------------------------------------
+.btn {
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.btn-gold {
+  background-color: theme.$ceylinco-gold-yellow;
+  border-color: theme.$ceylinco-gold-yellow;
+  color: theme.$ceylinco-pure-black;
+
+  &:hover, &:focus, &:active {
+    background-color: darken(theme.$ceylinco-gold-yellow, 6%) !important;
+    border-color: darken(theme.$ceylinco-gold-yellow, 6%) !important;
+    color: theme.$ceylinco-pure-black !important;
+  }
+
+  &:disabled {
+    background-color: theme.$ceylinco-light-gray;
+    border-color: theme.$ceylinco-light-gray;
+    color: theme.$ceylinco-dark-gray;
+  }
+}
+
+.btn-outline-portal {
+  background-color: transparent;
+  border: 1.5px solid theme.$ceylinco-light-gray;
+  color: theme.$ceylinco-pure-black;
+
+  &:hover, &:focus {
+    border-color: theme.$ceylinco-pure-black;
+    color: theme.$ceylinco-pure-black;
+    background-color: theme.$ceylinco-light-gray;
+  }
+}
+
+// App shell -------------------------------------------------------------
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: theme.$ceylinco-pure-white;
+}
+
+.app-main {
+  flex: 1;
+  padding-top: calc(var(--nav-height) + 16px);
+  padding-bottom: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.app-main--with-action-bar {
+  padding-bottom: calc(var(--action-bar-height) + 24px);
+}
+
+// Top navbar --------------------------------------------------------------
+.portal-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 1030;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 1rem;
+    color: theme.$ceylinco-pure-black;
+
+    .brand-chip {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background-color: theme.$ceylinco-gold-yellow;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: theme.$ceylinco-pure-black;
+      flex-shrink: 0;
+    }
+
+    .brand-sub {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: theme.$ceylinco-dark-gray;
+      letter-spacing: 0.02em;
+    }
+  }
+
+  .se-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: theme.$ceylinco-pure-black;
+    color: theme.$ceylinco-pure-white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+}
+
+// Login -------------------------------------------------------------------
+.login-shell {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: theme.$ceylinco-pure-black;
+  padding: 24px 16px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: theme.$ceylinco-pure-white;
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.login-mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background-color: theme.$ceylinco-gold-yellow;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+}
+
+.demo-hint {
+  background-color: theme.$ceylinco-light-gray;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.8rem;
+  color: theme.$ceylinco-dark-gray;
+
+  code {
+    color: theme.$ceylinco-pure-black;
+    font-weight: 600;
+    background: theme.$ceylinco-pure-white;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+}
+
+// Dashboard -----------------------------------------------------------
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stat-tile {
+  background: theme.$ceylinco-light-gray;
+  border-radius: 12px;
+  padding: 12px 10px;
+  text-align: center;
+
+  .stat-number {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: theme.$ceylinco-pure-black;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+
+  .stat-label {
+    font-size: 0.68rem;
+    color: theme.$ceylinco-dark-gray;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+}
+
+.cta-log-activity {
+  width: 100%;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: theme.$ceylinco-gold-yellow;
+  border: none;
+  color: theme.$ceylinco-pure-black;
+  text-align: left;
+  transition: transform 0.12s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  .cta-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .cta-title {
+    font-weight: 800;
+    font-size: 1.02rem;
+  }
+
+  .cta-sub {
+    font-size: 0.78rem;
+    opacity: 0.75;
+  }
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: theme.$ceylinco-dark-gray;
+  margin-bottom: 8px;
+}
+
+.list-card {
+  background: theme.$ceylinco-pure-white;
+  border: 1px solid theme.$ceylinco-light-gray;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border-bottom: 1px solid theme.$ceylinco-light-gray;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: theme.$ceylinco-light-gray;
+  }
+
+  .list-row-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: theme.$ceylinco-light-gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: theme.$ceylinco-pure-black;
+  }
+
+  .list-row-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .list-row-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: theme.$ceylinco-pure-black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-row-sub {
+    font-size: 0.76rem;
+    color: theme.$ceylinco-dark-gray;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-row-meta {
+    flex-shrink: 0;
+    text-align: right;
+    font-size: 0.72rem;
+    color: theme.$ceylinco-dark-gray;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 36px 20px;
+  color: theme.$ceylinco-dark-gray;
+
+  .empty-icon {
+    font-size: 1.9rem;
+    margin-bottom: 10px;
+    opacity: 0.5;
+  }
+
+  .empty-title {
+    font-weight: 700;
+    color: theme.$ceylinco-pure-black;
+    margin-bottom: 4px;
+  }
+
+  .empty-copy {
+    font-size: 0.85rem;
+  }
+}
+
+// Status badges (extends theme's .badge-status with the lead-status set) --
+.badge-status {
+  &.status-inquired { background-color: rgba(theme.$ceylinco-deep-blue, 0.1); color: theme.$ceylinco-deep-blue; }
+  &.status-sold     { background-color: rgba(#1F8A3B, 0.12); color: #1F8A3B; }
+  &.status-rejected { background-color: rgba(theme.$ceylinco-alert-red, 0.1); color: theme.$ceylinco-alert-red; }
+  // .status-pending already defined in theme-style.scss
+}
+
+// Wizard: stamped step indicator ------------------------------------------
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 22px;
+}
+
+.step-dot-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+
+  &:last-child {
+    flex: 0 0 auto;
+  }
+}
+
+.step-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  border: 1.5px solid theme.$ceylinco-light-gray;
+  color: theme.$ceylinco-dark-gray;
+  background: theme.$ceylinco-pure-white;
+  transition: all 0.15s ease;
+
+  &.is-done {
+    background-color: theme.$ceylinco-pure-black;
+    border-color: theme.$ceylinco-pure-black;
+    color: theme.$ceylinco-pure-white;
+  }
+
+  &.is-current {
+    border-color: theme.$ceylinco-gold-yellow;
+    background-color: theme.$ceylinco-pure-white;
+    color: theme.$ceylinco-pure-black;
+    box-shadow: 0 0 0 3px rgba(theme.$ceylinco-gold-yellow, 0.35);
+  }
+}
+
+.step-dot-line {
+  flex: 1;
+  height: 2px;
+  background-color: theme.$ceylinco-light-gray;
+  margin: 0 4px;
+
+  &.is-done {
+    background-color: theme.$ceylinco-pure-black;
+  }
+}
+
+.step-heading {
+  margin-bottom: 4px;
+}
+
+.step-subheading {
+  color: theme.$ceylinco-dark-gray;
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+}
+
+.wizard-fade {
+  animation: wizardFade 0.18s ease;
+}
+
+@keyframes wizardFade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Selectable option cards (activity type / customer type / policy) -------
+.option-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1.5px solid theme.$ceylinco-light-gray;
+  background: theme.$ceylinco-pure-white;
+  transition: border-color 0.12s ease, background-color 0.12s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &.is-selected {
+    border-color: theme.$ceylinco-pure-black;
+    background-color: theme.$ceylinco-light-gray;
+  }
+
+  .option-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: theme.$ceylinco-light-gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: theme.$ceylinco-pure-black;
+    flex-shrink: 0;
+  }
+
+  &.is-selected .option-icon {
+    background: theme.$ceylinco-gold-yellow;
+  }
+
+  .option-title {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: theme.$ceylinco-pure-black;
+  }
+
+  .option-sub {
+    font-size: 0.78rem;
+    color: theme.$ceylinco-dark-gray;
+    margin-top: 1px;
+  }
+
+  .option-check {
+    margin-left: auto;
+    color: theme.$ceylinco-pure-black;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+}
+
+.activity-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.activity-type-card {
+  @extend .option-card;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 14px;
+}
+
+// Policy category accordion -----------------------------------------------
+.policy-category {
+  border: 1px solid theme.$ceylinco-light-gray;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.policy-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 16px;
+  background: theme.$ceylinco-light-gray;
+  border: none;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: theme.$ceylinco-pure-black;
+  text-align: left;
+}
+
+.policy-category-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// Client summary card (existing customer, auto-loaded) --------------------
+.client-summary-card {
+  border: 1.5px solid theme.$ceylinco-deep-blue;
+  background: rgba(theme.$ceylinco-deep-blue, 0.04);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+// Sticky wizard action bar -------------------------------------------------
+.wizard-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: theme.$ceylinco-pure-white;
+  border-top: 1px solid theme.$ceylinco-light-gray;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 10px;
+  z-index: 1030;
+
+  .wizard-action-bar-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+  }
+}
+
+// Search input --------------------------------------------------------------
+.search-input-wrap {
+  position: relative;
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: theme.$ceylinco-dark-gray;
+  }
+
+  input {
+    padding-left: 40px !important;
+  }
+}
+
+// Success screen --------------------------------------------------------
+.success-shell {
+  text-align: center;
+  padding: 40px 16px;
+}
+
+.success-check {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: rgba(#1f8a3b, 0.12);
+  color: #1f8a3b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1rem;
+  margin: 0 auto 18px;
+}
+
+@media (min-width: 576px) {
+  .activity-type-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

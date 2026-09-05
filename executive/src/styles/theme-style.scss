@@ -1,0 +1,97 @@
+// ==========================================================================
+// 1. OFFICIAL CEYLINCO INSURANCE COLOR PALETTE (From Site Analysis)
+// ==========================================================================
+// Accent Colors
+$ceylinco-gold-yellow:  #FDD900; // rgb(253, 217, 0) - Highlight accent & primary CTAs
+$ceylinco-deep-blue:    #004094; // rgb(0, 64, 148)   - Secondary brand accent & hyperlinks
+$ceylinco-alert-red:    #E50019; // rgb(229, 0, 25)   - Alerts, errors, & special highlights
+
+// Typography & Structural Neutrals
+$ceylinco-dark-gray:    #6F6F6F; // rgb(111, 111, 111) - Primary body text
+$ceylinco-pure-black:   #000000; // rgb(0, 0, 0)       - Headings, headers, primary UI chrome
+$ceylinco-pure-white:   #FFFFFF; // rgb(255, 255, 255) - White-space & section backgrounds
+$ceylinco-light-gray:   #F1F1F1; // rgb(241, 241, 241) - Alternating block backgrounds
+$ceylinco-footer-dark:  #1C1C1C; // rgb(28, 28, 28)    - Extra dark canvas for portal footer
+
+// ==========================================================================
+// 2. GLOBAL BOOTSTRAP VARIABLE OVERRIDES
+// ==========================================================================
+// The following variables are overridden to match the CEYLINCO brand palette
+// @use "bootstrap/scss/bootstrap" with (...);
+//      1. Injects your custom Ceylinco design variables directly into the Bootstrap compiler pipeline
+//      2. Imports and compiles the entire Bootstrap framework source code
+@use "bootstrap/scss/bootstrap" with (
+$primary:       $ceylinco-pure-black,   // Core UI UI components use black backgrounds
+$secondary:     $ceylinco-gold-yellow,  // Brand Accent for micro-actions/promo bands
+$info:          $ceylinco-deep-blue,    // Hyperlinks, info banners, secondary buttons
+$danger:        $ceylinco-alert-red,    // Alerts, status flags, validation errors
+
+// Global Canvas and Text Definitions
+$body-bg:       $ceylinco-pure-white,   // Base background defaults to pure white
+$body-color:    $ceylinco-dark-gray,    // Primary body text uses the prevailing dark gray
+
+// Link customization to match deep corporate blue behavior
+$link-color:          $ceylinco-deep-blue,
+$link-decoration:     none,
+);
+
+// ==========================================================================
+// 3. PORTAL STRUCTURAL EXTRA COMPONENTS (Custom Site Infrastructure)
+// ==========================================================================
+
+// Global Nav Bar Styling Override
+.navbar-portal {
+  background-color: $ceylinco-pure-white;
+  border-bottom: 1px solid $ceylinco-light-gray;
+  
+  .nav-link {
+    color: $ceylinco-pure-black !important;
+    font-weight: 600;
+    
+    &:hover {
+      color: $ceylinco-deep-blue !important;
+    }
+  }
+}
+
+// Global Alternating Component Blocks
+.bg-section-alt {
+  background-color: $ceylinco-light-gray;
+}
+
+// Enterprise Dark Footer System
+.footer-portal {
+  background-color: $ceylinco-footer-dark;
+  color: $ceylinco-light-gray;
+  
+  h1, h2, h3, h4, h5, h6, strong {
+    color: $ceylinco-pure-white;
+  }
+  
+  a {
+    color: $ceylinco-gold-yellow;
+    &:hover {
+      color: $ceylinco-pure-white;
+    }
+  }
+}
+
+// Soft Translucent Policy & Claim Status Badges (10% Background Opacity)
+.badge-status {
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+
+  &.status-active  { background-color: rgba(#1F8A3B, 0.1); color: #1F8A3B; } // Semantic Success Green
+  &.status-pending { background-color: rgba($ceylinco-gold-yellow, 0.1); color: $ceylinco-gold-yellow; } // Semantic Warning Yellow
+  &.status-lapsed  { background-color: rgba($ceylinco-alert-red, 0.1); color: $ceylinco-alert-red; } // Semantic Error Red
+}
+
+// Contrast Guardrail for Gold/Yellow Promotional Background Bands
+.ceylinco-promo-band {
+  background-color: $ceylinco-gold-yellow;
+  color: $ceylinco-pure-black !important; // Strict layout rule: overlaying white text is blocked
+}

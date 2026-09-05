@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="lk.spas.manager.controller.SePaceForecastController"
+      fx:id="root" alignment="TOP_CENTER" spacing="16" styleClass="root">
+    <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+    <HBox maxWidth="900" alignment="CENTER_LEFT" spacing="10" styleClass="navbar-portal">
+        <Label text="SE Pace Forecast" styleClass="heading-2" HBox.hgrow="ALWAYS"/>
+        <Label text="Month" styleClass="text-strong"/>
+        <TextField fx:id="monthField" promptText="yyyy-MM" prefWidth="100"/>
+        <Label fx:id="monthValidationLabel" visible="false" managed="false"
+               styleClass="text-strong"/>
+        <Button fx:id="refreshButton" text="Refresh" onAction="#handleRefresh" styleClass="button-info"/>
+    </HBox>
+
+    <ProgressIndicator fx:id="loadingIndicator" visible="false" managed="false"/>
+    <Label fx:id="emptyLabel" text="No active sales executives found for this month."
+           visible="false" managed="false" styleClass="text-strong"/>
+    <HBox fx:id="errorBanner" visible="false" managed="false" spacing="10" alignment="CENTER" styleClass="bg-section-alt">
+        <Label fx:id="errorLabel" wrapText="true"/>
+        <Button fx:id="retryButton" text="Retry" styleClass="button-danger"/>
+    </HBox>
+
+    <TableView fx:id="forecastTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="seNameColumn" text="Sales Executive" prefWidth="170"/>
+            <TableColumn fx:id="levelColumn" text="Level" prefWidth="130"/>
+            <TableColumn fx:id="targetAmountColumn" text="Target Amount" prefWidth="150"/>
+            <TableColumn fx:id="achievedAmountColumn" text="Achieved Amount" prefWidth="160"/>
+            <TableColumn fx:id="predictionColumn" text="Will Hit Target" prefWidth="140"/>
+            <TableColumn fx:id="probabilityColumn" text="Probability" prefWidth="130"/>
+        </columns>
+    </TableView>
+</VBox>

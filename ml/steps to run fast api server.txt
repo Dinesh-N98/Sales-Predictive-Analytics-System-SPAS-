@@ -1,0 +1,9 @@
+cmd in <D:\SPAS\ml>
+
+1. venv\Scripts\activate.bat
+2. (venv) D:\SPAS\ml>where python
+3. uvicorn app.main:app --reload
+
+
+Go to:
+http://127.0.0.1:8000/docs

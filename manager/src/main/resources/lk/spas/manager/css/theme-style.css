@@ -1,0 +1,264 @@
+/* ==========================================================================
+ * SPAS Manager Portal - JavaFX Stylesheet
+ * Ported from the SE Portal's theme-style.scss (React-Bootstrap / Ceylinco brand)
+ *
+ * PORTING NOTES (read before editing):
+ * 1. JavaFX CSS has no Sass variables, but DOES support "looked-up colors":
+ *    any custom "-name: value;" declared on .root can be referenced elsewhere
+ *    as "-fx-property: -name;". That's how the $ceylinco-* palette below works.
+ * 2. Bootstrap's $primary/$secondary/$info/$danger only exist because they get
+ *    compiled into hundreds of generated classes (.btn-primary, .text-info,
+ *    .badge-danger, etc). JavaFX has no build step, so those generated classes
+ *    are hand-written below as .button-primary / .button-info / .button-danger
+ *    / .badge-status.status-* etc. Apply the matching styleClass in FXML/Java.
+ * 3. There is no h1–h6 or <strong> in JavaFX. Apply .heading-1 ... .heading-6
+ *    and .text-strong as styleClasses on Label/Text nodes where the SCSS used
+ *    those tags.
+ * 4. rgba(), :hover, and !important all work in JavaFX CSS the same as web CSS
+ *    (JavaFX has supported !important since Java 9), so those ported 1:1.
+ * 5. Nested Sass selectors (&:hover, .parent .child) don't exist in JavaFX CSS
+ *    — every nested rule below has been flattened into its own selector.
+ * ========================================================================== */
+
+/* ==========================================================================
+ * 1. OFFICIAL CEYLINCO INSURANCE COLOR PALETTE — looked-up color variables
+ * ========================================================================== */
+.root {
+    /* Accent Colors */
+    -ceylinco-gold-yellow:  #FDD900; /* Highlight accent & primary CTAs */
+    -ceylinco-deep-blue:    #004094; /* Secondary brand accent & hyperlinks */
+    -ceylinco-alert-red:    #E50019; /* Alerts, errors, & special highlights */
+
+    /* Typography & Structural Neutrals */
+    -ceylinco-dark-gray:    #6F6F6F; /* Primary body text */
+    -ceylinco-pure-black:   #000000; /* Headings, headers, primary UI chrome */
+    -ceylinco-pure-white:   #FFFFFF; /* White-space & section backgrounds */
+    -ceylinco-light-gray:   #F1F1F1; /* Alternating block backgrounds */
+    -ceylinco-footer-dark:  #1C1C1C; /* Extra dark canvas for portal footer */
+
+    /* Semantic status colors used by .badge-status (not in the original
+       $-variable block, but hard-coded in the SCSS status modifiers — pulled
+       up here so they're reusable/consistent instead of buried in one rule) */
+    -ceylinco-success-green: #1F8A3B;
+}
+
+/* ==========================================================================
+ * 2. GLOBAL BOOTSTRAP VARIABLE OVERRIDES — ported as JavaFX base + control styles
+ * ==========================================================================
+ * Bootstrap's $primary/$secondary/$info/$danger/$body-bg/$body-color/$link-*
+ * don't map onto a single JavaFX construct; they map onto the Scene root
+ * background/text defaults plus a family of hand-written control classes.
+ * ========================================================================== */
+
+/* Global canvas + body text (was $body-bg / $body-color) */
+.root {
+    -fx-background-color: -ceylinco-pure-white;
+    -fx-text-fill: -ceylinco-dark-gray;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.label {
+    -fx-text-fill: -ceylinco-dark-gray;
+}
+
+/* Links (was $link-color: deep-blue, $link-decoration: none) */
+.hyperlink {
+    -fx-text-fill: -ceylinco-deep-blue;
+    -fx-underline: false;
+    -fx-border-color: transparent; /* Hyperlink draws a focus/visited border by default; suppress it */
+}
+.hyperlink:visited {
+    -fx-text-fill: -ceylinco-deep-blue;
+}
+.hyperlink:hover {
+    -fx-text-fill: derive(-ceylinco-deep-blue, -15%);
+}
+
+/* $primary -> pure black (core UI components / default buttons) */
+.button, .button-primary {
+    -fx-background-color: -ceylinco-pure-black;
+    -fx-text-fill: -ceylinco-pure-white;
+    -fx-font-weight: 600;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+.button:hover, .button-primary:hover {
+    -fx-background-color: derive(-ceylinco-pure-black, 20%);
+}
+.button:pressed, .button-primary:pressed {
+    -fx-background-color: derive(-ceylinco-pure-black, 35%);
+}
+
+.sidebar {
+    -fx-background-color: -ceylinco-light-gray;
+    -fx-border-color: transparent -ceylinco-light-gray transparent transparent;
+    -fx-border-width: 0 1px 0 0;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -ceylinco-pure-black;
+    -fx-font-weight: 600;
+    -fx-alignment: center-left;
+    -fx-padding: 10px 12px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+.sidebar-button:hover {
+    -fx-background-color: derive(-ceylinco-gold-yellow, 45%);
+}
+.sidebar-button.active {
+    -fx-background-color: -ceylinco-gold-yellow;
+    -fx-text-fill: -ceylinco-pure-black;
+}
+
+.content-area {
+    -fx-background-color: -ceylinco-pure-white;
+    -fx-padding: 20px;
+}
+
+.placeholder-label {
+    -fx-text-fill: -ceylinco-deep-blue;
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+}
+
+/* $secondary -> gold-yellow (brand accent / micro-actions / promo) */
+.button-secondary {
+    -fx-background-color: -ceylinco-gold-yellow;
+    -fx-text-fill: -ceylinco-pure-black; /* contrast guardrail, see section 3 */
+    -fx-font-weight: 600;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+.button-secondary:hover {
+    -fx-background-color: derive(-ceylinco-gold-yellow, -10%);
+}
+
+/* $info -> deep-blue (hyperlink-styled / secondary buttons, info banners) */
+.button-info {
+    -fx-background-color: -ceylinco-deep-blue;
+    -fx-text-fill: -ceylinco-pure-white;
+    -fx-font-weight: 600;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+.button-info:hover {
+    -fx-background-color: derive(-ceylinco-deep-blue, 15%);
+}
+
+/* $danger -> alert-red (destructive actions / validation errors) */
+.button-danger {
+    -fx-background-color: -ceylinco-alert-red;
+    -fx-text-fill: -ceylinco-pure-white;
+    -fx-font-weight: 600;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+.button-danger:hover {
+    -fx-background-color: derive(-ceylinco-alert-red, 15%);
+}
+
+/* ==========================================================================
+ * 3. PORTAL STRUCTURAL EXTRA COMPONENTS (Custom Site Infrastructure)
+ * ========================================================================== */
+
+/* --- Global Nav Bar Styling Override ---
+   Apply styleClass="navbar-portal" to the top ToolBar/HBox, and
+   styleClass="nav-link" to each nav Button/Label/Hyperlink inside it. */
+.navbar-portal {
+    -fx-background-color: -ceylinco-pure-white;
+    -fx-border-color: transparent transparent -ceylinco-light-gray transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.navbar-portal .nav-link {
+    -fx-text-fill: -ceylinco-pure-black;
+    -fx-font-weight: 600;
+    -fx-background-color: transparent;
+}
+.navbar-portal .nav-link:hover {
+    -fx-text-fill: -ceylinco-deep-blue;
+}
+
+/* --- Global Alternating Component Blocks ---
+   Apply styleClass="bg-section-alt" to any Region/Pane. */
+.bg-section-alt {
+    -fx-background-color: -ceylinco-light-gray;
+}
+
+/* --- Enterprise Dark Footer System ---
+   Apply styleClass="footer-portal" to the footer container, and
+   .heading-1..6 / .text-strong to Labels that stood in for h1-h6/strong. */
+.footer-portal {
+    -fx-background-color: -ceylinco-footer-dark;
+}
+.footer-portal .label {
+    -fx-text-fill: -ceylinco-light-gray;
+}
+.footer-portal .heading-1,
+.footer-portal .heading-2,
+.footer-portal .heading-3,
+.footer-portal .heading-4,
+.footer-portal .heading-5,
+.footer-portal .heading-6,
+.footer-portal .text-strong {
+    -fx-text-fill: -ceylinco-pure-white;
+}
+.footer-portal .text-strong {
+    -fx-font-weight: bold;
+}
+.footer-portal .hyperlink {
+    -fx-text-fill: -ceylinco-gold-yellow;
+}
+.footer-portal .hyperlink:hover {
+    -fx-text-fill: -ceylinco-pure-white;
+}
+
+/* --- Soft Translucent Policy & Claim Status Badges (10% Background Opacity) ---
+   Apply styleClass="badge-status" plus one of status-active/status-pending/
+   status-lapsed to a Label. rgba() with an alpha channel works the same as
+   in web CSS. */
+.badge-status {
+    -fx-background-radius: 999px;
+    -fx-padding: 4px 12px;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+    -fx-alignment: center-left;
+}
+
+.badge-status.status-active {
+    -fx-background-color: rgba(31, 138, 59, 0.1);
+    -fx-text-fill: -ceylinco-success-green;
+}
+.badge-status.status-pending {
+    -fx-background-color: rgba(253, 217, 0, 0.1);
+    -fx-text-fill: -ceylinco-gold-yellow;
+}
+.badge-status.status-lapsed {
+    -fx-background-color: rgba(229, 0, 25, 0.1);
+    -fx-text-fill: -ceylinco-alert-red;
+}
+.badge-status.status-inactive {
+    -fx-background-color: rgba(229, 0, 25, 0.1);
+    -fx-text-fill: -ceylinco-alert-red;
+}
+
+/* --- Contrast Guardrail for Gold/Yellow Promotional Background Bands ---
+   Apply styleClass="ceylinco-promo-band" to the band container; apply it
+   again (or rely on descendant selector below) on child Labels so the black
+   text rule always wins, mirroring the SCSS !important. */
+.ceylinco-promo-band {
+    -fx-background-color: -ceylinco-gold-yellow;
+    -fx-text-fill: -ceylinco-pure-black !important;
+}
+.ceylinco-promo-band .label {
+    -fx-text-fill: -ceylinco-pure-black !important;
+}
+

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="lk.spas.manager.controller.EditExecutiveController"
+      alignment="TOP_LEFT" spacing="12" styleClass="root"
+      prefWidth="420" prefHeight="430">
+    <padding>
+        <Insets top="24" bottom="24" left="24" right="24"/>
+    </padding>
+
+    <Label text="Edit Executive" styleClass="heading-2"/>
+    <TextField fx:id="fullNameField" promptText="Full name"/>
+    <TextField fx:id="phoneField" promptText="Phone"/>
+    <TextField fx:id="emailField" promptText="Email"/>
+    <ComboBox fx:id="levelBox" promptText="Level" maxWidth="Infinity"/>
+    <PasswordField fx:id="passwordField"
+                   promptText="Leave blank to keep current password"/>
+    <CheckBox fx:id="activeBox" text="Active"/>
+    <Label fx:id="statusLabel" wrapText="true"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#handleCancel" styleClass="button-secondary"/>
+        <Button fx:id="saveButton" text="Save" onAction="#handleUpdateExecutive"
+                styleClass="button-primary"/>
+    </HBox>
+</VBox>
