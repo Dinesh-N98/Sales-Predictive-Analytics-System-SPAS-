@@ -636,6 +636,187 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto 18px;
 }
 
+.feedback-share-panel {
+  width: 100%;
+  max-width: 560px;
+  padding: 16px;
+  border: 1px solid theme.$ceylinco-light-gray;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.feedback-share-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.feedback-link-row {
+  display: flex;
+  gap: 8px;
+
+  .form-control {
+    min-width: 0;
+    font-size: 0.78rem;
+  }
+}
+
+.feedback-copy-button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.feedback-share-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+
+  .btn {
+    flex: 1;
+    font-size: 0.82rem;
+  }
+}
+
+// Public client feedback ------------------------------------------------
+.public-feedback-shell {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background:
+    linear-gradient(135deg, rgba(theme.$ceylinco-deep-blue, 0.08), transparent 52%),
+    theme.$ceylinco-light-gray;
+}
+
+.public-feedback-card {
+  width: 100%;
+  max-width: 540px;
+  padding: 32px 28px;
+  background: theme.$ceylinco-pure-white;
+  border-top: 5px solid theme.$ceylinco-gold-yellow;
+  border-radius: 16px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+}
+
+.public-feedback-mark {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: theme.$ceylinco-gold-yellow;
+  color: theme.$ceylinco-pure-black;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.public-feedback-kicker {
+  margin-bottom: 8px;
+  color: theme.$ceylinco-deep-blue;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.public-feedback-card h1 {
+  margin-bottom: 8px;
+  font-size: clamp(1.65rem, 5vw, 2.1rem);
+}
+
+.public-feedback-copy {
+  margin-bottom: 28px;
+  color: theme.$ceylinco-dark-gray;
+}
+
+.rating-fieldset {
+  margin-bottom: 28px;
+  border: 0;
+  padding: 0;
+}
+
+.rating-fieldset legend {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.rating-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.rating-option {
+  min-width: 0;
+  padding: 10px 4px;
+  border: 1px solid theme.$ceylinco-light-gray;
+  border-radius: 10px;
+  color: theme.$ceylinco-dark-gray;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:hover,
+  &:focus-within,
+  &.is-selected {
+    border-color: theme.$ceylinco-deep-blue;
+    background-color: rgba(theme.$ceylinco-deep-blue, 0.06);
+    color: theme.$ceylinco-pure-black;
+  }
+}
+
+.rating-number,
+.rating-label {
+  display: block;
+}
+
+.rating-number {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.rating-label {
+  overflow-wrap: anywhere;
+  font-size: 0.62rem;
+  line-height: 1.2;
+}
+
+.public-feedback-selects .form-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.feedback-complete {
+  text-align: center;
+
+  .public-feedback-mark {
+    margin-right: auto;
+    margin-left: auto;
+    background: rgba(#1f8a3b, 0.12);
+    color: #1f8a3b;
+  }
+}
+
+@media (max-width: 480px) {
+  .feedback-link-row {
+    flex-direction: column;
+  }
+
+  .feedback-copy-button {
+    width: 100%;
+  }
+}
+
 @media (min-width: 576px) {
   .activity-type-grid {
     grid-template-columns: repeat(3, 1fr);

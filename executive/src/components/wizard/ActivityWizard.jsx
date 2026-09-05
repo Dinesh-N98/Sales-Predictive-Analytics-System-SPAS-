@@ -87,6 +87,7 @@ export default function ActivityWizard() {
   const [savedSummary, setSavedSummary] = useState(null);
   const [saveError, setSaveError] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLinkCopied, setIsLinkCopied] = useState(false);
 
   const sequence = getStepSequence(draft);
   const stepKey = sequence[stepIndex];
@@ -119,6 +120,7 @@ export default function ActivityWizard() {
     setSavedSummary(null);
     setSaveError(null);
     setIsSaving(false);
+    setIsLinkCopied(false);
   }
 
   async function handleSave() {
@@ -128,7 +130,7 @@ export default function ActivityWizard() {
 
     try {
       if (draft.customerMode === "new") {
-        const created = addClient({ ...draft.client, last_policy_id: draft.policyId });
+        const created = await addClient(draft.client);
         clientId = created.id;
       } else {
         clientId = draft.selectedClientId;
@@ -176,13 +178,27 @@ export default function ActivityWizard() {
         });
       }
 
-      setSavedSummary({ clientName: draft.client?.full_name, statusId: draft.status_id });
+      setSavedSummary({
+        clientName: draft.client?.full_name,
+        statusId: draft.status_id,
+        feedbackToken: savedActivity.feedback_token,
+      });
       setIsDone(true);
     } catch (error) {
       setSaveError(error.message || "Activity could not be saved.");
     } finally {
       setIsSaving(false);
     }
+  }
+
+  const feedbackUrl = savedSummary?.feedbackToken
+    ? `${window.location.origin}/feedback/${encodeURIComponent(savedSummary.feedbackToken)}`
+    : null;
+
+  async function copyFeedbackLink() {
+    if (!feedbackUrl) return;
+    await navigator.clipboard.writeText(feedbackUrl);
+    setIsLinkCopied(true);
   }
 
   function renderStep() {
@@ -218,6 +234,35 @@ export default function ActivityWizard() {
         <p className="text-secondary mb-4">
           {savedSummary?.clientName ? `Saved for ${savedSummary.clientName}.` : "Saved successfully."}
         </p>
+        {feedbackUrl && (
+          <div className="feedback-share-panel mx-auto mb-4">
+            <div className="feedback-share-label">Client feedback link</div>
+            <div className="feedback-link-row">
+              <input className="form-control" value={feedbackUrl} readOnly aria-label="Client feedback link" />
+              <button type="button" className="btn btn-gold feedback-copy-button" onClick={copyFeedbackLink}>
+                <i className={`bi ${isLinkCopied ? "bi-check-lg" : "bi-copy"}`} aria-hidden="true" />
+                <span>{isLinkCopied ? "Copied" : "Copy link"}</span>
+              </button>
+            </div>
+            <div className="feedback-share-actions">
+              <a
+                className="btn btn-outline-portal"
+                href={`https://wa.me/?text=${encodeURIComponent(`Please share your feedback: ${feedbackUrl}`)}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i className="bi bi-whatsapp" aria-hidden="true" /> WhatsApp
+              </a>
+              <a
+                className="btn btn-outline-portal"
+                href={`mailto:?subject=${encodeURIComponent("Share your feedback")}&body=${encodeURIComponent(`Please share your feedback: ${feedbackUrl}`)}`}
+              >
+                <i className="bi bi-envelope" aria-hidden="true" /> Email
+              </a>
+            </div>
+            <small className="text-secondary d-block mt-2">The public feedback form still needs to be added before this link can receive responses.</small>
+          </div>
+        )}
         <div className="d-flex flex-column gap-2 mx-auto" style={{ maxWidth: 320 }}>
           <button type="button" className="btn btn-gold" onClick={resetWizard}>
             Log another activity

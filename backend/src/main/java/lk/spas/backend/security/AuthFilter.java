@@ -80,6 +80,8 @@ public class AuthFilter implements ContainerRequestFilter {
 
     private boolean isPublicPath(String path) {
         return "auth/login".equals(path)
+                || "feedback-strengths".equals(path)
+                || "feedback-improvements".equals(path)
                 || (path.startsWith("public/client-feedbacks/")
                 && path.length() > "public/client-feedbacks/".length());
     }
