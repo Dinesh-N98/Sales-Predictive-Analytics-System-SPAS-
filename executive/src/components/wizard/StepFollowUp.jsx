@@ -10,7 +10,11 @@ function todayIso() {
   return new Date().toISOString().slice(0, 10);
 }
 
+const DURATION_OPTIONS = [5, 10, 15, 20, 30, 40, 60];
+
 export function isFollowUpStepValid(draft, leadStatuses) {
+  if (!draft.duration_minutes) return false;
+
   const pendingStatusId = getStatusId(leadStatuses, "Pending");
   const soldStatusId = getStatusId(leadStatuses, "Sold");
   const rejectedStatusId = getStatusId(leadStatuses, "Rejected");
@@ -35,7 +39,7 @@ export default function StepFollowUp({ draft, updateDraft }) {
   const pendingStatusId = getStatusId(leadStatuses, "Pending");
   const soldStatusId = getStatusId(leadStatuses, "Sold");
   const rejectedStatusId = getStatusId(leadStatuses, "Rejected");
-  const [touched, setTouched] = useState({ status: false, next_follow_up_date: false, premium_amount: false, rejection_reason_id: false });
+  const [touched, setTouched] = useState({ status: false, next_follow_up_date: false, premium_amount: false, rejection_reason_id: false, duration_minutes: false });
 
   useEffect(() => {
     if (draft.customerMode === "new" && !draft.status_id) {
@@ -62,6 +66,7 @@ export default function StepFollowUp({ draft, updateDraft }) {
   const pendingError = draft.status_id === pendingStatusId && touched.next_follow_up_date && !draft.next_follow_up_date;
   const soldError = draft.status_id === soldStatusId && touched.premium_amount && (!draft.premium_amount || Number(draft.premium_amount) <= 0);
   const rejectedError = draft.status_id === rejectedStatusId && touched.rejection_reason_id && !draft.rejection_reason_id;
+  const durationError = touched.duration_minutes && !draft.duration_minutes;
 
   return (
     <div className="wizard-fade">
@@ -184,13 +189,24 @@ export default function StepFollowUp({ draft, updateDraft }) {
         <Row>
           <Col xs={12} sm={6}>
             <Form.Group className="mb-3" controlId="duration">
-              <Form.Label>Duration (minutes)</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
+              <Form.Label>Duration (minutes) *</Form.Label>
+              <Form.Select
                 value={draft.duration_minutes || ""}
-                onChange={(e) => setField("duration_minutes", e.target.value)}
-              />
+                onChange={(e) => {
+                  setTouched((prev) => ({ ...prev, duration_minutes: true }));
+                  setField("duration_minutes", Number(e.target.value) || "");
+                }}
+                isInvalid={durationError}
+              >
+                <option value="">Select duration</option>
+                {DURATION_OPTIONS.map((duration) => (
+                  <option key={duration} value={duration}>{duration}</option>
+                ))}
+                <option value="90">&gt;60</option>
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                Select a duration.
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>

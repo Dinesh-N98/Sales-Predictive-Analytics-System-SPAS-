@@ -23,11 +23,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lk.spas.backend.dto.ClientCreateDto;
 import lk.spas.backend.dto.ClientDto;
+import lk.spas.backend.dto.LastPolicyDto;
 import lk.spas.backend.entity.Client;
 import lk.spas.backend.entity.ClientType;
 import lk.spas.backend.entity.FinancialLevel;
 import lk.spas.backend.entity.LeadSource;
 import lk.spas.backend.entity.RejectionReason;
+import lk.spas.backend.entity.ActivityLog;
 import lk.spas.backend.entity.SalesExecutive;
 import lk.spas.backend.exception.ApiError;
 import lk.spas.backend.security.Secured;
@@ -70,6 +72,30 @@ public class ClientResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return client == null ? Response.status(Response.Status.NOT_FOUND).build() : Response.ok(toDto(client)).build();
+    }
+
+    @GET
+    @Path("{id}/last-policy")
+    @Secured({"EXECUTIVE"})
+    public Response getLastPolicy(@PathParam("id") Integer id, @Context SecurityContext securityContext) {
+        Client client = em.find(Client.class, id);
+        if (client == null || (isExecutive(securityContext) && !belongsToCurrentUser(client.getSalesExecutive(), securityContext))) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        List<ActivityLog> activities = em.createQuery(
+            "SELECT a FROM ActivityLog a WHERE a.client.id = :clientId ORDER BY a.createdAt DESC, a.id DESC",
+            ActivityLog.class)
+                .setParameter("clientId", id)
+                .setMaxResults(1)
+                .getResultList();
+        if (activities.isEmpty() || activities.get(0).getClientPolicy() == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        ActivityLog activity = activities.get(0);
+        return Response.ok(new LastPolicyDto(activity.getClientPolicy().getId(), activity.getClientPolicy().getPolicyName(),
+            activity.getActivityDate(), activity.getCreatedAt())).build();
     }
 
     @POST

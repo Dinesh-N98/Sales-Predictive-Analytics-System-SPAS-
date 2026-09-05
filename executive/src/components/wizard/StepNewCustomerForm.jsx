@@ -6,8 +6,6 @@ const emptyClient = {
   full_name: "",
   address: "",
   contact_number: "",
-  nic: "",
-  email: "",
   client_type_id: "",
   financial_level_id: "",
   lead_source_id: "",
@@ -72,41 +70,18 @@ export default function StepNewCustomerForm({ draft, updateDraft }) {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Row>
-          <Col xs={12} sm={6}>
-            <Form.Group className="mb-3" controlId="contactNumber">
-              <Form.Label>Contact number *</Form.Label>
-              <Form.Control
-                type="tel"
-                value={client.contact_number}
-                onChange={(e) => setField("contact_number", sanitizePhone(e.target.value))}
-                onBlur={() => markTouched("contact_number")}
-                isInvalid={contactNumberError}
-              />
-              <Form.Control.Feedback type="invalid">
-                Enter a contact number.
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Col>
-          <Col xs={12} sm={6}>
-            <Form.Group className="mb-3" controlId="nic">
-              <Form.Label>NIC</Form.Label>
-              <Form.Control
-                type="text"
-                value={client.nic}
-                onChange={(e) => setField("nic", e.target.value)}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
+        <Form.Group className="mb-3" controlId="contactNumber">
+          <Form.Label>Contact number *</Form.Label>
           <Form.Control
-            type="email"
-            value={client.email}
-            onChange={(e) => setField("email", e.target.value)}
+            type="tel"
+            value={client.contact_number}
+            onChange={(e) => setField("contact_number", sanitizePhone(e.target.value))}
+            onBlur={() => markTouched("contact_number")}
+            isInvalid={contactNumberError}
           />
+          <Form.Control.Feedback type="invalid">
+            Enter a contact number.
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="address">

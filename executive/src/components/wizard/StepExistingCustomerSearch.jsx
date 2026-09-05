@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useDataStore, useLookups } from "../../context/DataStoreContext";
-import { findById } from "../../data/mockData";
+import { findById } from "../../utils/findById";
 import EmptyState from "../common/EmptyState";
 
 export function isExistingCustomerStepValid(draft) {
@@ -9,14 +9,46 @@ export function isExistingCustomerStepValid(draft) {
 }
 
 export default function StepExistingCustomerSearch({ draft, updateDraft }) {
-  const { searchClients, getActivitiesForClient } = useDataStore();
-  const { clientTypes, financialLevels, policies } = useLookups();
+  const { searchClients, getActivitiesForClient, getLastPolicyForClient } = useDataStore();
+  const { clientTypes, financialLevels } = useLookups();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState(null);
+  const [lastPolicy, setLastPolicy] = useState(null);
+  const [lastPolicyLoading, setLastPolicyLoading] = useState(false);
+  const [lastPolicyError, setLastPolicyError] = useState(null);
 
   const selectedClient = draft.client;
+
+  useEffect(() => {
+    if (!selectedClient) {
+      setLastPolicy(null);
+      setLastPolicyError(null);
+      return undefined;
+    }
+
+    let cancelled = false;
+    setLastPolicyLoading(true);
+    setLastPolicyError(null);
+    getLastPolicyForClient(selectedClient.id)
+      .then((policy) => {
+        if (!cancelled) {
+          setLastPolicy(policy);
+          updateDraft({ policyId: policy?.policyId || null });
+        }
+      })
+      .catch((error) => {
+        if (!cancelled) setLastPolicyError(error.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLastPolicyLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [getLastPolicyForClient, selectedClient, updateDraft]);
 
   useEffect(() => {
     const normalizedQuery = query.trim();
@@ -52,7 +84,7 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
   }, [query, searchClients]);
 
   function selectClient(client) {
-    updateDraft({ client, selectedClientId: client.id, policyId: client.last_policy_id || null });
+    updateDraft({ client, selectedClientId: client.id, policyId: null });
     setQuery("");
   }
 
@@ -63,7 +95,6 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
   if (selectedClient) {
     const clientType = findById(clientTypes, selectedClient.client_type_id);
     const financialLevel = findById(financialLevels, selectedClient.financial_level_id);
-    const lastPolicy = findById(policies, selectedClient.last_policy_id);
     const priorActivityCount = getActivitiesForClient(selectedClient.id).length;
 
     return (
@@ -75,7 +106,7 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
           <div className="d-flex justify-content-between align-items-start mb-2">
             <div>
               <div className="fw-bold">{selectedClient.full_name}</div>
-              <div className="text-secondary small">{selectedClient.contact_number} · {selectedClient.nic}</div>
+              <div className="text-secondary small">{selectedClient.contact_number}</div>
             </div>
             <button type="button" className="btn btn-sm btn-outline-portal" onClick={clearSelection}>
               Change
@@ -85,11 +116,16 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
             {clientType && <span className="badge-segment">{clientType.type_name}</span>}
             {financialLevel && <span className="badge-segment">{financialLevel.level_name} value</span>}
           </div>
-          {lastPolicy && (
+          {lastPolicyLoading && <div className="small text-secondary">Loading latest policy...</div>}
+          {!lastPolicyLoading && lastPolicy && (
             <div className="small text-secondary">
-              Last discussed: <strong className="text-dark">{lastPolicy.policy_name}</strong>
+              Most recent policy: <strong className="text-dark">{lastPolicy.policyName}</strong>
             </div>
           )}
+          {!lastPolicyLoading && !lastPolicy && !lastPolicyError && (
+            <div className="small text-secondary">No policy yet</div>
+          )}
+          {lastPolicyError && <div className="small text-danger">{lastPolicyError}</div>}
           <div className="small text-secondary">
             {priorActivityCount} previous {priorActivityCount === 1 ? "activity" : "activities"} logged
           </div>
@@ -101,7 +137,7 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
   return (
     <div className="wizard-fade">
       <h5 className="step-heading">Find the customer</h5>
-      <p className="step-subheading">Search by name, phone number, or NIC.</p>
+      <p className="step-subheading">Search by name or phone number.</p>
 
       <div className="search-input-wrap mb-3">
         <i className="bi bi-search search-icon" />
@@ -134,7 +170,7 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
               </span>
               <span className="list-row-body">
                 <span className="list-row-title">{client.full_name}</span>
-                <span className="list-row-sub">{client.contact_number} · {client.nic}</span>
+                <span className="list-row-sub">{client.contact_number}</span>
               </span>
               <span className="list-row-meta">
                 <i className="bi bi-chevron-right" />
@@ -148,7 +184,7 @@ export default function StepExistingCustomerSearch({ draft, updateDraft }) {
         <EmptyState
           icon="bi-search"
           title="Search to get started"
-          copy="Type at least 2 characters of their name, phone, or NIC."
+          copy="Type at least 2 characters of their name or phone number."
         />
       )}
     </div>

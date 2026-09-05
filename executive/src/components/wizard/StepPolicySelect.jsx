@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { findById } from "../../data/mockData";
+import { useEffect, useState } from "react";
+import { findById } from "../../utils/findById";
 import { useLookups } from "../../context/DataStoreContext";
 
 export function isPolicyStepValid(draft) {
@@ -12,6 +12,10 @@ export default function StepPolicySelect({ draft, updateDraft }) {
   const initiallyOpen = selectedPolicy ? selectedPolicy.policy_category_id : (policyCategories[0]?.id || null);
   const [openCategoryId, setOpenCategoryId] = useState(initiallyOpen);
   const [touched, setTouched] = useState(false);
+
+  useEffect(() => {
+    if (selectedPolicy) setOpenCategoryId(selectedPolicy.policy_category_id);
+  }, [selectedPolicy]);
 
   function choosePolicy(policyId) {
     setTouched(true);

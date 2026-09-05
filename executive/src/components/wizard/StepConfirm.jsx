@@ -1,4 +1,4 @@
-import { findById } from "../../data/mockData";
+import { findById } from "../../utils/findById";
 import { useLookups } from "../../context/DataStoreContext";
 import StatusBadge from "../common/StatusBadge";
 

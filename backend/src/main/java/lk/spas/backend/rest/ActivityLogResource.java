@@ -60,7 +60,7 @@ public class ActivityLogResource {
             @Context SecurityContext securityContext) {
         int normalizedPage = normalizePage(page);
         int normalizedSize = normalizeSize(size);
-        return em.createQuery("SELECT a FROM ActivityLog a WHERE a.salesExecutive.id = :seId ORDER BY a.id ASC", ActivityLog.class)
+        return em.createQuery("SELECT a FROM ActivityLog a WHERE a.salesExecutive.id = :seId ORDER BY a.createdAt DESC, a.id DESC", ActivityLog.class)
                 .setParameter("seId", currentExecutiveId(securityContext))
                 .setFirstResult(normalizedPage * normalizedSize).setMaxResults(normalizedSize).getResultList().stream()
                 .map(this::toDto).collect(Collectors.toList());

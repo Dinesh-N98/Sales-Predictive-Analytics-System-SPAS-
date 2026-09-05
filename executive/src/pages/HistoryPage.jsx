@@ -90,7 +90,7 @@ export default function HistoryPage() {
     return source
       .filter((log) => !activityFilter || log.activity_type_id === Number(activityFilter))
       .filter((log) => !statusFilter || log.status_id === Number(statusFilter))
-      .sort((a, b) => new Date(b.activity_date) - new Date(a.activity_date));
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   }, [activities, allActivities, activityFilter, filtersActive, statusFilter]);
 
   const displayedActivities = filtersActive ? filtered.slice(page * 20, (page + 1) * 20) : filtered;
@@ -156,7 +156,7 @@ export default function HistoryPage() {
                 <span className="list-row-body">
                   <span className="list-row-title">{client?.full_name || log.client_name || "Unknown customer"}</span>
                   <span className="list-row-sub">
-                    {activityType?.activity_name || log.activity_type_name} · {formatDateTime(log.activity_date)}
+                    {activityType?.activity_name || log.activity_type_name} · {formatDateTime(log.created_at)}
                     {log.remarks ? ` · ${log.remarks}` : ""}
                   </span>
                 </span>

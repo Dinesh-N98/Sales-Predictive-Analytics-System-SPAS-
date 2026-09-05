@@ -732,6 +732,35 @@ h1, h2, h3, h4, h5, h6 {
   color: theme.$ceylinco-dark-gray;
 }
 
+.public-feedback-privacy {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: -8px 0 24px;
+  padding: 11px 12px;
+  border: 1px solid rgba(theme.$ceylinco-deep-blue, 0.12);
+  border-radius: 10px;
+  background: rgba(theme.$ceylinco-deep-blue, 0.045);
+  color: theme.$ceylinco-dark-gray;
+  font-size: 0.74rem;
+  line-height: 1.5;
+
+  i {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: theme.$ceylinco-deep-blue;
+    font-size: 0.95rem;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  strong {
+    color: theme.$ceylinco-pure-black;
+  }
+}
+
 .rating-fieldset {
   margin-bottom: 28px;
   border: 0;

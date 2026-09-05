@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 import { useDataStore, useLookups } from "../../context/DataStoreContext";
 import StepIndicator from "./StepIndicator";
 import StepActivityType from "./StepActivityType";
@@ -35,7 +34,6 @@ function buildInitialDraft(prefillClient) {
     customerMode: "existing",
     client: prefillClient,
     selectedClientId: prefillClient.id,
-    policyId: prefillClient.last_policy_id || null,
     skipCustomerSteps: true,
   };
 }
@@ -75,8 +73,7 @@ function getStepValidity(stepKey, draft, leadStatuses) {
 export default function ActivityWizard() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentSe } = useAuth();
-  const { addClient, updateClient, addActivityLog, updateActivityLog, addSale } = useDataStore();
+  const { addClient, updateClient, addActivityLog, updateActivityLog, getLastPolicyForClient } = useDataStore();
   const { lookupsLoading, lookupsError, leadStatuses } = useLookups();
 
   const prefillClient = location.state?.prefillClient || null;
@@ -89,6 +86,23 @@ export default function ActivityWizard() {
   const [isSaving, setIsSaving] = useState(false);
   const [isLinkCopied, setIsLinkCopied] = useState(false);
 
+  useEffect(() => {
+    if (!prefillClient) return undefined;
+
+    let cancelled = false;
+    getLastPolicyForClient(prefillClient.id)
+      .then((policy) => {
+        if (!cancelled) setDraft((currentDraft) => ({ ...currentDraft, policyId: policy?.policyId || null }));
+      })
+      .catch(() => {
+        if (!cancelled) setDraft((currentDraft) => ({ ...currentDraft, policyId: null }));
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [getLastPolicyForClient, prefillClient]);
+
   const sequence = getStepSequence(draft);
   const stepKey = sequence[stepIndex];
   const isLastStep = stepIndex === sequence.length - 1;
@@ -97,9 +111,9 @@ export default function ActivityWizard() {
   const soldStatusId = getStatusId(leadStatuses, "Sold");
   const rejectedStatusId = getStatusId(leadStatuses, "Rejected");
 
-  function updateDraft(patch) {
+  const updateDraft = useCallback((patch) => {
     setDraft((prev) => ({ ...prev, ...patch }));
-  }
+  }, []);
 
   function goNext() {
     setStepIndex((i) => Math.min(i + 1, sequence.length - 1));
@@ -134,8 +148,7 @@ export default function ActivityWizard() {
         clientId = created.id;
       } else {
         clientId = draft.selectedClientId;
-        updateClient(clientId, {
-          last_policy_id: draft.policyId,
+        await updateClient(clientId, {
           rejection_reason_id: draft.status_id === rejectedStatusId ? draft.rejection_reason_id : draft.client.rejection_reason_id,
         });
       }
@@ -165,17 +178,6 @@ export default function ActivityWizard() {
           const conflictPrefix = error.status === 409 ? "Sold conflict" : "Sold update failed";
           throw new Error(`${conflictPrefix}: activity was logged, but it was not marked Sold. ${error.message}`);
         }
-      }
-
-      if (draft.status_id === soldStatusId) {
-        addSale({
-          client_id: clientId,
-          policy_id: draft.policyId,
-          se_id: currentSe.id,
-          issue_date: new Date().toISOString().slice(0, 10),
-          renewal_date: null,
-          premium_amount: Number(draft.premium_amount),
-        });
       }
 
       setSavedSummary({

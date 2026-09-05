@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { SE_LEVELS, findById } from "../../data/mockData";
+import { useLookups } from "../../context/DataStoreContext";
 
 function initialsFor(name) {
   return name
@@ -13,11 +13,12 @@ function initialsFor(name) {
 
 export default function AppNavbar() {
   const { currentSe, logout } = useAuth();
+  const { seLevels } = useLookups();
   const navigate = useNavigate();
 
   if (!currentSe) return null;
 
-  const level = findById(SE_LEVELS, currentSe.se_level_id);
+  const level = seLevels.find((item) => String(item.id) === String(currentSe.se_level_id));
 
   function handleLogout() {
     logout();
@@ -47,7 +48,7 @@ export default function AppNavbar() {
         <div className="text-end d-none d-sm-block">
           <div className="fw-semibold small lh-1">{currentSe.full_name}</div>
           <div className="text-secondary lh-1" style={{ fontSize: "0.7rem" }}>
-            {level?.level_name}
+            {level?.level_name || currentSe.se_level_name || ""}
           </div>
         </div>
         <div className="se-avatar" title={currentSe.full_name}>

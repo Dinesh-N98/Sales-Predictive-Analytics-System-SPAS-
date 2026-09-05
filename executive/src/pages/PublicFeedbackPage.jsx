@@ -122,6 +122,13 @@ export default function PublicFeedbackPage() {
         <p className="public-feedback-kicker">Ceylinco Insurance</p>
         <h1>How was your experience?</h1>
         <p className="public-feedback-copy">Please take a moment to tell us about your recent interaction.</p>
+        <aside className="public-feedback-privacy" aria-label="Privacy notice">
+          <i className="bi bi-info-circle" aria-hidden="true" />
+          <p>
+            <strong>Your privacy matters to us.</strong>{" "}
+            Ceylinco Insurance may use anonymized details from your interactions including financial profile category to improve service quality and sales processes. Your feedback and personal data are processed in line with Sri Lanka's Personal Data Protection Act, No. 9 of 2022. Data is never shared with third parties for marketing purposes.
+          </p>
+        </aside>
 
         <Form onSubmit={handleSubmit}>
           <fieldset className="rating-fieldset">
